@@ -516,7 +516,7 @@ def daily_signals_app():
 
 	# Download and parse the content of the text files from the GitHub repository
 	base_url = "https://raw.githubusercontent.com/mslade50/Multi_page/main/"
-	file_names = ["bullish_seasonals.txt",'bearish_seasonals.txt"]
+	file_names = ["bullish_seasonals.txt","bearish_seasonals.txt"]
 
 	megas_list = []
 	for file_name in file_names:
