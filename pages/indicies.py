@@ -9,6 +9,7 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
 
+st.title("Indicies")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -29,10 +30,10 @@ def seasonals_chart(tick):
 	spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
 
 	# Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
-	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=len(spx_rank).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=len(spx_rank)).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	# Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
-	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=len(spx_rank).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=len(spx_rank)).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
 	dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
@@ -453,19 +454,19 @@ def seasonals_chart(tick):
 	fig.add_trace(go.Scatter(x=[length_value], y=[y_value_at_length], mode='markers', marker=dict(color='white', size=8), name='White Dot' ,showlegend=False))
 	def text_color(value, reverse=False):
 	    if not reverse:
-		if value >= 85:
-		    return 'green'
-		elif value <= 15:
-		    return 'red'
-		else:
-		    return 'white'
+	        if value >= 85:
+	            return 'green'
+	        elif value <= 15:
+	            return 'red'
+	        else:
+	            return 'white'
 	    else:
-		if value >= 85:
-		    return 'red'
-		elif value <= 15:
-		    return 'green'
-		else:
-		    return 'white'
+	        if value >= 85:
+	            return 'red'
+	        elif value <= 15:
+	            return 'green'
+	        else:
+	            return 'white'
 	def create_annotation(x, y, text, color):
 	    return dict(
 		x=x,
@@ -516,4 +517,4 @@ def seasonals_chart(tick):
 megas_list=['^DJI','^RUT','^NDX','QQQ','^GSPC','SPY','^SOX','^IXIC','^RUO','^GDAXI','^FTSE','^HSI','^N225','GC=F','SI=F','CL=F','ZW=F','NG=F','TLT','^VIX','DX-Y.NYB','EURUSD=X','GBPUSD=X','USDJPY=X','USDCHF=X']
 for stock in megas_list:
 	seasonals_chart(stock)
-st.title("Indicies")
+
