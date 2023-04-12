@@ -8,7 +8,7 @@ import yfinance as yf
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
-
+st.title("Open Positions")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -516,4 +516,4 @@ def seasonals_chart(tick):
 positions=['OZK','JPM','CL=F','BWA','GBPUSD=X','IWM','GOOG']
 for stock in positions:
 	seasonals_chart(stock)
-st.title("Positions")
+
