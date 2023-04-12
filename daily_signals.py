@@ -515,8 +515,8 @@ def seasonals_chart(tick):
 	st.plotly_chart(fig)
 
 # Download and parse the content of the text files from the GitHub repository
-base_url = "https://raw.githubusercontent.com/mslade50/Streamlit_host/main/"
-file_names = ["seasonal_up_sigs.txt", "seaonal_down_sigs.txt", "tmr_up.txt", "tmr_down.txt"]
+base_url = "https://raw.githubusercontent.com/mslade50/Multi_page/main/"
+file_names = ["bullish_seasonals.txt",'bearish_seasonals.txt"]
 
 megas_list = []
 for file_name in file_names:
