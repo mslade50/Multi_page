@@ -1,1 +1,1 @@
-['HST', 'SO', 'SBS', 'SNPS', 'ELS', 'CSCO', 'DE', 'ES', 'WDC', 'CGNX', 'AEE', 'MAA', 'CPT', 'PZZA', 'XEL', 'ENB', 'AVXL', 'TER', 'DRI','^SOX','AOS', 'CGNX', 'AAPL', 'WFC', 'OHI', 'DPZ', 'ELS', 'LSI', 'RRX', 'SBS', 'HST', 'SUI', 'CB', 'SON', 'CCEP', '^SOX']
+['HST', 'SO', 'SBS', 'SNPS', 'ELS', 'CSCO', 'DE', 'ES', 'WDC', 'CGNX', 'AEE', 'MAA', 'CPT', 'PZZA', 'XEL']
