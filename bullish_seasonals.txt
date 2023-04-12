@@ -1,1 +1,1 @@
-['HST', 'SO', 'SBS', 'SNPS', 'ELS', 'CSCO', 'DE', 'ES', 'WDC', 'CGNX', 'AEE', 'MAA', 'CPT', 'PZZA', 'XEL']
+['SPY']
