@@ -8,7 +8,7 @@ import yfinance as yf
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
-
+st.title("Single Names")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -516,4 +516,4 @@ def seasonals_chart(tick):
 megas_list=['AAPL','AMD','AMZN','DIS','GOOG','GS','HD','JNJ','JPM','LIN','LMT','MCD','MRK','MSFT','NFLX','NKE','NVDA','OXY','TSLA','TSM','TXN','UNH','V','WMT','XOM']
 for stock in megas_list:
 	seasonals_chart(stock)
-st.title("Single Names")
+
