@@ -1,8 +1,5 @@
 import streamlit as st
-from daily_signals import daily_signals_app
-from indicies import indicies_app
-from positions import positions_app
-from single_names import single_names_app
+from pages import daily_signals, indicies, positions, single_names
 
 st.set_page_config(page_title="Multi-Page Dashboard", page_icon=":chart_with_upwards_trend:")
 
@@ -19,13 +16,13 @@ def main():
     )
 
     if app_selection == "Daily Signals":
-        daily_signals_app()
+        daily_signals
     elif app_selection == "Indices":
-        indicies_app()
+        indicies
     elif app_selection == "Positions":
-        positions_app()
+        positions
     elif app_selection == "Single Names":
-        single_names_app()
+        single_names
 
 if __name__ == "__main__":
     main()
