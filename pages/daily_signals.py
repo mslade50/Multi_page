@@ -9,6 +9,7 @@ import yfinance as yf
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
+st.title("Daily Signals")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -534,4 +535,4 @@ megas_list = [stock for stock in set(megas_list) if stock]
 # Run the script with the updated megas_list
 for stock in megas_list:
     seasonals_chart(stock)
-st.title("Daily Signals")
+
