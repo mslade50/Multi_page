@@ -30,10 +30,10 @@ def seasonals_chart(tick):
 	spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
 
 	# Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
-	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=len(spx_rank)).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=2000).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	# Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
-	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=len(spx_rank)).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=2000)).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
 	dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
