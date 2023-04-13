@@ -8,7 +8,8 @@ import yfinance as yf
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
-st.title("Open Positions")
+
+st.title("Commodities")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -29,10 +30,10 @@ def seasonals_chart(tick):
 	spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
 
 	# Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
-	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=2000).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	# Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
-	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=2000).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
 	dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
@@ -513,7 +514,7 @@ def seasonals_chart(tick):
 	)
 	st.plotly_chart(fig)
 
-positions=['OZK','JPM','CL=F','BWA','GBPUSD=X','IWM','GOOG','BLDR','TLT']
-for stock in positions:
+megas_list=['GC=F','SI=F','PL=F','HG=F','PA=F','CL=F','HO=F','NG=F','RB=F','BZ=F','ZC=F','ZO=F','KE=F','ZR=F','ZM=F',
+           'ZL=F','ZS=F','HE=F','LE=F','CC=F','KC=F','CT=F','LBS=F','SB=F']
+for stock in megas_list:
 	seasonals_chart(stock)
-
