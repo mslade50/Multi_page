@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import daily_signals, indicies, positions, single_names, currency_pairs
+from pages import daily_signals, indicies, positions, single_names, currency_pairs, commodities
 
 st.set_page_config(page_title="Multi-Page Dashboard", page_icon=":chart_with_upwards_trend:")
 
@@ -23,13 +23,19 @@ def currency_pairs_page():
     st.sidebar.markdown("# Currency Pairs")
     currency_pairs.currency_pairs_app()
 
+def commodities_page():
+    st.sidebar.markdown("# Commodities")
+    commodities.commodities_app()
+
 page_names_to_funcs = {
     "Daily Signals": daily_signals_page,
     "Indices": indicies_page,
     "Positions": positions_page,
     "Single Names": single_names_page,
     "Currency Pairs": currency_pairs_page,
+    "Commodities": commodities_page,
 }
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
 page_names_to_funcs[selected_page]()
+
