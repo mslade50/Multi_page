@@ -14,7 +14,7 @@ import yfinance as yf
 from pandas_datareader import data as pdr
 from matplotlib import cm
 import plotly.io as pio
-
+st.title("Weather Map Forecasts")
 ##convert matplotlib seismic color scale to plotly compatible 
 def matplotlib_to_plotly(cmap, pl_entries):
     h = 1.0/(pl_entries-1)
@@ -1778,9 +1778,8 @@ fig2.show()
 # fig17.show()
 
 if NPD_today < -6.75:
-	fig11.show()
-elif NPD_today>-6.75:
-	fig8.show()
-print(NPD_today)
+    st.plotly_chart(fig11)
+elif NPD_today > -6.75:
+    st.plotly_chart(fig8)
 
 # pio.write_image(fig13,"op.pdf")
