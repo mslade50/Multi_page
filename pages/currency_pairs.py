@@ -9,7 +9,7 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
 
-st.title("Indicies")
+st.title("Currency Pairs")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
