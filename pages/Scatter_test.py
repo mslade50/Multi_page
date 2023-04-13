@@ -14,6 +14,7 @@ import yfinance as yf
 from pandas_datareader import data as pdr
 from matplotlib import cm
 import plotly.io as pio
+import streamlit as st
 st.title("Weather Map Forecasts")
 ##convert matplotlib seismic color scale to plotly compatible 
 def matplotlib_to_plotly(cmap, pl_entries):
