@@ -1,1 +1,1 @@
-['ELS', 'TCBI', 'CCEP', 'RRX', 'CGNX', 'CAKE', 'CB', 'AES', 'SPY', 'EDU', 'RELX', 'CAKE', 'ELS', 'SHOO', 'BIIB', 'SO', 'AEE']
+['ELS','BIIB','SHOO','RELX','PAAS','CEF']
