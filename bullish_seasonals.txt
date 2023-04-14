@@ -1,1 +1,1 @@
-['BIIB', 'RELX', 'SHOO', 'PEGA', 'ASML', 'RELX', 'BIIB']
+['PEGA']

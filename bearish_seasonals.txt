@@ -1,1 +1,1 @@
-['SFNC', 'HOG', 'BLDR', 'BLDR', 'PAAS', 'CEF']
+['PAAS', 'HOLX', 'CEF', 'BLDR']
