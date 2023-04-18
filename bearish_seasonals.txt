@@ -1,1 +1,1 @@
-['PAAS', 'HOLX', 'CEF', 'BLDR']
+['LRN', 'RYAAY', 'RYAAY']

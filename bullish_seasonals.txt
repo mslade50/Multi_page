@@ -1,1 +1,1 @@
-['PEGA', 'HAE', 'HAE', 'MELI', 'SEM', 'SEM', 'OMCL', 'OMCL', 'VIAV', 'ACHC', 'AVNT', 'EBAY', 'DISH', 'DISH', 'NVS', 'CVS', 'CVS', 'ACN', 'LKQ', 'ELV', 'ELV', 'GILD', 'LDOS', 'LDOS', 'UMPQ', '^NDX']
+['CVS', 'DISH', 'EBAY', 'ACN', 'HAE', 'OMCL', 'ELV', 'GILD', 'LKQ', 'LDOS', '^NDX', 'VIAV', 'SEM', 'MELI', 'UMPQ', 'MYGN', 'MYGN', 'AMED', 'MASI', 'MASI', 'SEM', 'SEM', 'OMCL', 'AVNT', 'IART', 'ROP', 'WCN', 'RCL', 'ELV', 'ELV', 'VZ', 'RSG', 'LDOS']
