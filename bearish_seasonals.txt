@@ -1,1 +1,1 @@
-['RYAAY', 'LRN', 'BECN', 'HLIT', 'HOLI']
+['BECN', 'TREX', 'EOG', 'GGAL', 'HOLI', 'HOLI', 'OTEX', 'OTEX', 'FLR', 'VFC', 'VFC', 'WMT']

@@ -1,1 +1,1 @@
-['MASI', 'SEM', 'ELV', 'OMCL', 'VZ', 'LDOS', 'AMED', 'AVNT', 'MYGN', 'UMPQ', 'MYGN', 'MASI', 'MELI', 'TECH', 'IART', 'IART', 'VRSK', 'ROP', 'ROP', 'CVS', 'AIZ', 'WCN', 'RCL', 'ELV', 'RSG', 'RSG', 'CHD']
+['MASI', 'ELV', 'MELI', 'IART', 'RSG', 'CVS', 'MYGN', 'WCN', 'ROP', 'RCL', 'AXS', 'INCY', 'TECH', 'TECH', 'MAG', 'IART', 'VRSK', 'ROP', 'ROP', 'AIZ', 'RSG', 'RSG', 'CHD', '^VIX', '^VIX']
