@@ -1,1 +1,1 @@
-['MASI', 'ELV', 'MELI', 'IART', 'RSG', 'CVS', 'MYGN', 'WCN', 'ROP', 'RCL', 'AXS', 'INCY', 'TECH', 'TECH', 'MAG', 'IART', 'VRSK', 'ROP', 'ROP', 'AIZ', 'RSG', 'RSG', 'CHD', '^VIX', '^VIX']
+['IART', 'RSG', 'AIZ', 'ROP', 'TECH', 'CHD', 'MAG', '^VIX', 'AXS', 'INCY', 'VRSK', 'TECH', 'RSG']
