@@ -514,12 +514,7 @@ def seasonals_chart(tick):
 	st.plotly_chart(fig)
 
 
-def app():
-    st.title('User Input')
-    
-    # Ask the user for a ticker
-    ticker = st.text_input('Enter a stock ticker:')
-    
-    if ticker:
-        # Run the seasonal_chart function on the user's input
-        seasonals_chart(ticker)
+positions=['^VIX','SPY','^GSPC']
+positions.sort()
+for stock in positions:
+	seasonals_chart(stock)
