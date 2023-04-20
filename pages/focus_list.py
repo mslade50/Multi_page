@@ -8,7 +8,7 @@ import yfinance as yf
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
-st.title("Focus List")
+# st.title("User Input")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -513,7 +513,13 @@ def seasonals_chart(tick):
 	)
 	st.plotly_chart(fig)
 
-positions=['^VIX','SPY','^GSPC']
-positions.sort()
-for stock in positions:
-	seasonals_chart(stock)
+
+def app():
+    st.title('User Input')
+    
+    # Ask the user for a ticker
+    ticker = st.text_input('Enter a stock ticker:')
+    
+    if ticker:
+        # Run the seasonal_chart function on the user's input
+        seasonals_chart(ticker)
