@@ -513,7 +513,7 @@ def seasonals_chart(tick):
 	)
 	st.plotly_chart(fig)
 
-positions=['OZK','JPM','PAAS','CL=F','BWA','GBPUSD=X','IWM','BLDR','TLT','LMT','HD','KRE','ASML','RYAAY']
+positions=['PAAS','BWA','GBPUSD=X','IWM','BLDR','TLT','LMT','HD','KRE','ASML','RYAAY','MLCO','WMT']
 positions.sort()
 for stock in positions:
 	seasonals_chart(stock)
