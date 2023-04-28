@@ -1,1 +1,1 @@
-['BLNK', 'ROIC', 'SIG', 'AUDUSD=X', 'UBSI', 'XPO', 'COHR', 'BR', 'EBAY', 'SKYW', 'PXD', 'PXD', 'ARLP', 'SIG', 'FTNT', 'FTNT', 'RRC', 'DFS']
+['DFS', 'FTNT', 'PXD', 'SIG', 'ARLP', 'SKYW', 'TTMI', 'PXD', 'RRC', 'ALL', 'ALL', 'EURUSD=X', 'EURUSD=X']

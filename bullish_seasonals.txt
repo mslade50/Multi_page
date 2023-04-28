@@ -1,1 +1,1 @@
-['ETR', 'MCK', 'AMT', 'XEL', 'OHI', 'SANM', 'HEI', 'ADTN', 'PPL', 'HAE', 'AXS', 'AXS', 'HEI', 'HEI', 'DRI', 'DRI', 'CVS', 'MCK', 'MCK', 'JCI', 'UNH', 'UNH', 'SBAC', 'SBAC', 'CNC', 'CNC', 'ATVI', 'PEP', 'GIS', 'GIS']
+['GIS', 'HAE', 'DRI', 'HEI', 'MCK', 'UNH', 'ATVI', 'AXS', 'JCI', 'CNC', 'SBAC', 'CVS', 'PEP', 'TNK', 'HEI', 'DRI', 'SUI', 'SUI', 'MCK', 'MCK', 'UNH', 'CNC', 'zw=f']
