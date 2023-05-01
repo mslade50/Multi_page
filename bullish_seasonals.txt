@@ -1,1 +1,1 @@
-['GIS', 'HAE', 'DRI', 'HEI', 'MCK', 'UNH', 'ATVI', 'AXS', 'JCI', 'CNC', 'SBAC', 'CVS', 'PEP', 'TNK', 'HEI', 'DRI', 'SUI', 'SUI', 'MCK', 'MCK', 'UNH', 'CNC', 'zw=f']
+['zw=f', 'UNH', 'HEI', 'TNK', 'CNC', 'DAR', 'DAR', 'BRKR', 'BRKR', 'AXS', 'CME', 'AVB', 'SBAC']
