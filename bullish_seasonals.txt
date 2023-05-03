@@ -1,1 +1,1 @@
-['SBAC', 'BRKR', 'DAR', 'AXS', 'SUI', 'MCK', 'ATEC', 'LNG', 'LNG', 'TNP', 'CME', 'CME', 'AVB', 'AVB', 'HLF', 'CPT', 'NEE', 'NEE']
+['BRKR', 'DAR', 'AXS', 'SUI', 'MCK', 'ATEC', 'LNG', 'LNG', 'TNP', 'CME', 'CME', 'AVB', 'AVB', 'HLF', 'CPT', 'NEE', 'NEE']
