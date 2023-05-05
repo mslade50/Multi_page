@@ -448,7 +448,42 @@ def seasonals_chart(tick):
 
 	# Interpolate Y value at the specified X coordinate
 	y_value_at_length = np.interp(length_value, s4.index, s4.values)
+	s4_values = s4.values[:length]
+	this_year_values = days2['this_yr'][:length]
+	this_year_values = np.where(np.isnan(this_year_values), np.nanmean(this_year_values), this_year_values)
 
+	if np.isnan(s4_values).any() or np.isnan(this_year_values).any() or np.var(s4_values) == 0 or np.var(this_year_values) == 0:
+	    correlation_coefficient = 'N/A'
+	else:
+	    correlation_matrix = np.corrcoef(s4_values, this_year_values)
+	    correlation_coefficient = correlation_matrix[0, 1]
+	    correlation_coefficient = f"{correlation_coefficient:.2f}"
+	def sign_agreement(a, b, window):
+	    a_changes = a[window:] - a[:-window]
+	    b_changes = b[window:] - b[:-window]
+	    return np.mean(np.sign(a_changes) == np.sign(b_changes))
+
+# 	correlations = []
+# 	window_size = 5
+
+# 	for i in range(len(s4_values) - window_size + 1):
+# 		window_s4 = s4_values[i : i + window_size]
+# 		window_this_year = this_year_values[i : i + window_size]
+# 		if np.isnan(window_s4).any() or np.isnan(window_this_year).any() or np.var(window_s4) == 0 or np.var(window_this_year) == 0:
+# 			correlations.append(np.nan)
+# 		else:
+# 			correlation_matrix = np.corrcoef(window_s4, window_this_year)
+# 			correlation_coefficient = correlation_matrix[0, 1]
+# 			correlations.append(correlation_coefficient)
+
+# 	average_correlation = pd.Series(correlations).mean()
+# 	average_correlation = f"{average_correlation:.2f}"
+
+	# Calculate sign agreement for 5-day, 10-day, and 21-day forward changes
+	sign_agreement_1d = sign_agreement(s4_values, this_year_values, window=1).round(2)
+	sign_agreement_5d = sign_agreement(s4_values, this_year_values, window=5).round(2)
+	sign_agreement_10d = sign_agreement(s4_values, this_year_values, window=10).round(2)
+	sign_agreement_21d = sign_agreement(s4_values, this_year_values, window=21).round(2)
 	# Add a white dot at the specified X coordinate and the interpolated Y value
 	fig.add_trace(go.Scatter(x=[length_value], y=[y_value_at_length], mode='markers', marker=dict(color='white', size=8), name='White Dot' ,showlegend=False))
 	def text_color(value, reverse=False):
@@ -488,6 +523,15 @@ def seasonals_chart(tick):
 	    create_annotation(0.85, -0.22, f"Trailing 21 Rank: {trailing_21_rank}", text_color(trailing_21_rank, reverse=True)),
 	    create_annotation(1.04, -0.22, f"Trailing 5 Rank: {trailing_5_rank}", text_color(trailing_5_rank, reverse=True)),
 	]
+	annotations.append(
+	    create_annotation(
+		1.02,
+		1.10,
+		f"Concordance 1,5,10,21: {sign_agreement_1d}, {sign_agreement_5d}, {sign_agreement_10d}, {sign_agreement_21d}",
+		'white'
+	    )
+	)
+# 	annotations.append(create_annotation(0.95, 1.12, f"Average 14-Period Rolling Correlation: {average_correlation}", 'white'))
 	fig.update_layout(
 	    title=f"Mean return path for {ticker2} in years {start}-present",
 	    legend=dict(
