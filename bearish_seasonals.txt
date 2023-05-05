@@ -1,1 +1,1 @@
-['CRH', 'EURUSD=X', 'HAIN', 'GSK', 'SCCO', 'EXPD', 'FORM', 'HA', 'PUK', 'CLF', 'CLF', 'KT', 'CRH']
+['KT', 'CRH', 'EXPD', 'EURUSD=X', 'FORM', '^DJT', 'CLF', 'IFF', 'PUK', 'WERN', 'SCCO', 'SCCO', 'OLED', 'OLED', 'CHRW', 'CHRW', 'UCTT', 'EXPD', 'HA', 'HA', 'PAAS', 'LSTR', 'LSTR', 'EMN', 'CLF', 'CLF', 'KT', 'UNP', 'UNP', 'HOG', 'OFC', 'OFC', 'STZ', 'IYT', '^DJT']
