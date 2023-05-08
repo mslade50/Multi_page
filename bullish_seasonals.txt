@@ -1,1 +1,1 @@
-['AMED', 'ECL', 'CPT', 'LNG', 'TMUS', 'AMED', 'AMED', 'HDB', 'LNG', 'CPRX', 'CPRX']
+['AMED', 'LNG', 'CPRX', 'HDB', 'CPRX', 'CPRX']
