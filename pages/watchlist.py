@@ -9,6 +9,7 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
 st.title("Watchlist")
+positions=['^VIX','TREX','SIG','CME','DLB','SPY','QQQ','WYNN','USO','SLV']
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -557,7 +558,7 @@ def seasonals_chart(tick):
 	)
 	st.plotly_chart(fig)
 
-positions=['^VIX','DISH','SPY','QQQ','WYNN','USO','SLV']
+
 positions.sort()
 for stock in positions:
 	seasonals_chart(stock)
