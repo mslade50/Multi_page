@@ -1,1 +1,1 @@
-['CPRX', 'HDB', 'ZBRA', 'ZBRA', 'CPRX', 'CPRX', 'ACHC', 'CF']
+['ZBRA', 'CPRX', 'ACHC', 'GLNG', 'ZBRA', 'UAA', 'UAA', 'CF', 'CF']
