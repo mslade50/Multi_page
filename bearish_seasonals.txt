@@ -1,1 +1,1 @@
-['J', 'CENX', 'NTAP', 'GL', 'PLCE', 'TJX', 'MAT', 'SPG', 'HON', 'SKT', 'LSI', 'TRN', 'WCC', 'BAP', 'LOW', 'EPD', 'HOG', 'MSFT', 'STLD', 'ARW', 'LNW', 'UDR', 'WBS', 'INTC', 'PRDO', 'STLD', 'ESTE', 'ESTE', 'LOW', 'CRS', 'LXU', 'TRV', 'MAG', 'LSI', 'HOG', 'SPG', 'OFC', 'MAT', 'TJX', 'TJX', 'KIM', 'WBS', 'GBCI']
+['ESTE', 'SPG', 'STLD', 'TJX', 'LXU', 'MAG', 'OFC', 'LOW', 'CRS', 'LSI', 'WBS', 'HOG', 'TRV', 'KIM', 'MAT', 'ESTE', 'ESTE', 'ADSK', 'CAT', 'ADBE', 'CMC', 'CMC', 'IBM', 'IBM']
