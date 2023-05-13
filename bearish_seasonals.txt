@@ -1,1 +1,1 @@
-['ESTE', 'SPG', 'STLD', 'TJX', 'LXU', 'MAG', 'OFC', 'LOW', 'CRS', 'LSI', 'WBS', 'HOG', 'TRV', 'KIM', 'MAT', 'ESTE', 'ESTE', 'ADSK', 'CAT', 'ADBE', 'CMC', 'CMC', 'IBM', 'IBM']
+['CAT', 'ESTE', 'ADBE', 'IBM', 'CMC', 'AUDUSD=X', 'ESTE', 'ESTE', 'AVGO', 'SBRA', 'EPD', 'KDP', 'IBM']
