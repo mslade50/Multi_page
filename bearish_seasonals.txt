@@ -1,1 +1,1 @@
-['SBRA', 'ESTE', 'IBM', 'AUDUSD=X', 'KDP', 'EPD', 'ESTE', 'AVGO', 'IRM', 'G', 'CM', 'CM', 'VMW', 'VMW', 'V', 'EURUSD=X']
+[]
