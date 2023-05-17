@@ -1,1 +1,1 @@
-['ESTE', 'VMW', 'AVGO', 'CM', 'V', 'IRM', 'HDSN', 'MEOH', 'G', 'CM', 'CM', 'RY', 'RY', 'PM', 'PM', 'USDCHF=X', 'USDCHF=X']
+['RY', 'PM', 'CM', 'G', 'HDSN', 'PDCE', 'PDCE', 'CM', 'CM', 'ENB', 'ENB', 'RY', 'RY', 'PM', 'USDCHF=X', 'USDCHF=X']
