@@ -1,1 +1,1 @@
-['PWR', 'IFF', 'APPS', 'LSCC', 'LSCC', 'RMD', 'APPS', 'HD', 'C', 'AXP', 'AXP']
+['HD', 'AXP', 'APPS', 'LSCC', 'C', 'LSCC', 'LSCC', 'RMD', 'RMD', 'GES', 'GES', 'CGNX', 'CGNX', 'CRI', 'FRT', 'BSX', 'BSX', 'WMT', 'WMT', 'KO', 'KO']
