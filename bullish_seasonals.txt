@@ -1,1 +1,1 @@
-['HD', 'AXP', 'APPS', 'LSCC', 'C', 'LSCC', 'LSCC', 'RMD', 'RMD', 'GES', 'GES', 'CGNX', 'CGNX', 'CRI', 'FRT', 'BSX', 'BSX', 'WMT', 'WMT', 'KO', 'KO']
+['WMT', 'GES', 'CGNX', 'LSCC', 'RMD', 'CRI', 'BSX', 'KO', 'ENTG', 'ENTG', 'BCRX', 'BCRX', 'LSCC', 'LSCC', 'ASML', 'PRO', 'PRO', 'AZTA', 'AZTA', 'CRL', 'CRL', 'CIB', 'CGNX', 'DHR', 'DHR', 'AVGO', 'SA', 'MRVL', 'CRI', 'GD', 'C', 'KBR', 'BSX', 'DEO', '^NYA']
