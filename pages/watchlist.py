@@ -559,6 +559,10 @@ def seasonals_chart(tick):
 	st.plotly_chart(fig)
 
 
-positions.sort()
-for stock in positions:
-	seasonals_chart(stock)
+stock = st.text_input("Enter a stock ticker:", value="AAPL")
+if st.button('Plot'):
+	try:
+		seasonals_chart(stock)
+	except:
+		st.error('Error retrieving data. Please check the ticker and try again.')
+
