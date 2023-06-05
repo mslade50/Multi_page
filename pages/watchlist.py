@@ -9,7 +9,12 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
 st.title("Watchlist")
-positions=['^VIX','TREX','SIG','CME','DLB','SPY','QQQ','WYNN','USO','SLV']
+stock = st.text_input("Enter a stock ticker:", value="AAPL")
+if st.button('Plot'):
+	try:
+		seasonals_chart(stock)
+	except:
+		st.error('Error retrieving data. Please check the ticker and try again.')
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
@@ -559,10 +564,5 @@ def seasonals_chart(tick):
 	st.plotly_chart(fig)
 
 
-stock = st.text_input("Enter a stock ticker:", value="AAPL")
-if st.button('Plot'):
-	try:
-		seasonals_chart(stock)
-	except:
-		st.error('Error retrieving data. Please check the ticker and try again.')
+
 
