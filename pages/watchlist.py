@@ -29,6 +29,9 @@ def seasonals_chart(tick):
 	spx1=yf.Ticker(ticker)
 	spx = spx1.history(period="max",end=end_date)
 	df= spx1.history(period="max")
+	df.index = pd.to_datetime(df.index)
+	if pd.Timestamp('2001-09-12') in df.index:
+		df = df.drop(pd.Timestamp('2001-09-12'))
 	df['200_MA'] = df['Close'].rolling(window=200).mean()
 	df['200_WMA'] = df['Close'].rolling(window=965).mean()
 	df['RSI'] = RSIIndicator(df['Close']).rsi()
