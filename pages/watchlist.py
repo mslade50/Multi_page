@@ -29,6 +29,15 @@ def seasonals_chart(tick):
 	spx1=yf.Ticker(ticker)
 	spx = spx1.history(period="max",end=end_date)
 	df= spx1.history(period="max")
+
+	df['date'] = s4.index[-5:]
+	df['atr'], df['atr_percentile'], df['above_ma_200'], df['above_ma_965'] = calculate_atr_percentile(df['close'], df['ma_200'], df['ma_965'])
+	df['slope_ma_200'] = calculate_slope(df['ma_200'].values)
+	df['slope_ma_965'] = calculate_slope(df['ma_965'].values)
+
+	df['200_MA'] = df['Close'].rolling(window=200).mean()
+	df['200_WMA'] = df['Close'].rolling(window=965).mean()
+	df['RSI'] = RSIIndicator(df['Close']).rsi()
 	def calculate_atr_percentile(close_prices, ma_200, ma_965):
 	    atr = abs(close_prices - ma_200)
 	    atr_percentile = atr.rank(pct=True) * 100
@@ -38,14 +47,6 @@ def seasonals_chart(tick):
 	def calculate_slope(y_values):
 	    x_values = np.arange(len(y_values))
 	    return np.polyfit(x_values, y_values, 1)[0]
-	df['date'] = s4.index[-5:]
-	df['atr'], df['atr_percentile'], df['above_ma_200'], df['above_ma_965'] = calculate_atr_percentile(df['close'], df['ma_200'], df['ma_965'])
-	df['slope_ma_200'] = calculate_slope(df['ma_200'].values)
-	df['slope_ma_965'] = calculate_slope(df['ma_965'].values)
-
-	df['200_MA'] = df['Close'].rolling(window=200).mean()
-	df['200_WMA'] = df['Close'].rolling(window=965).mean()
-	df['RSI'] = RSIIndicator(df['Close']).rsi()
 	df = df[-252:]
 	df.reset_index(inplace=True)
 	df['date_str'] = range(1,len(df)+1)
