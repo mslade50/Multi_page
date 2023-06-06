@@ -3,27 +3,53 @@ import numpy as np
 import datetime as dt
 from datetime import date
 from datetime import timedelta
+import requests
 import os
 import yfinance as yf
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
-st.title("Watchlist")
-stock = st.text_input("Enter a stock ticker:", value="AAPL")
+from plotly.subplots import make_subplots
+from ta.momentum import RSIIndicator
 
+st.title("User Input")
+stock = st.text_input("Enter a stock ticker:", value="AAPL")
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1951
-	cycle_label='Third Year of Cycle'
+	cycle_label='Midterms'
 	cycle_var='pre_election'
 	adjust=0
 	plot_ytd="Yes"
 	all_=""
 	end_date=dt.datetime(2022,12,30)
+	this_yr_end=dt.date.today()
+
 
 	spx1=yf.Ticker(ticker)
 	spx = spx1.history(period="max",end=end_date)
-	spx_rank=spx1.history(period="max")
+	df= spx1.history(period="max")
+	def calculate_atr_percentile(close_prices, ma_200, ma_965):
+	    atr = abs(close_prices - ma_200)
+	    atr_percentile = atr.rank(pct=True) * 100
+	    above_ma_200 = np.where(close_prices > ma_200, 'Above', 'Below')
+	    above_ma_965 = np.where(close_prices > ma_965, 'Above', 'Below')
+	    return atr, atr_percentile, above_ma_200, above_ma_965
+	def calculate_slope(y_values):
+	    x_values = np.arange(len(y_values))
+	    return np.polyfit(x_values, y_values, 1)[0]
+	df['date'] = s4.index[-5:]
+	df['atr'], df['atr_percentile'], df['above_ma_200'], df['above_ma_965'] = calculate_atr_percentile(df['close'], df['ma_200'], df['ma_965'])
+	df['slope_ma_200'] = calculate_slope(df['ma_200'].values)
+	df['slope_ma_965'] = calculate_slope(df['ma_965'].values)
+
+	df['200_MA'] = df['Close'].rolling(window=200).mean()
+	df['200_WMA'] = df['Close'].rolling(window=965).mean()
+	df['RSI'] = RSIIndicator(df['Close']).rsi()
+	df = df[-252:]
+	df.reset_index(inplace=True)
+	df['date_str'] = range(1,len(df)+1)
+	spx_rank=spx1.history(period="max",end=this_yr_end)
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
 
@@ -51,12 +77,15 @@ def seasonals_chart(tick):
 
 	#second dataframe explicity to count the number of trading days so far this year
 	now = dt.datetime.now()+timedelta(days=1)
-	days = yf.download(ticker, start="2022-12-31", end=now)
-	days["log_return"] = np.log(days["Close"] / days["Close"].shift(1))*100
+	days = yf.download(ticker, start=end_date, end=this_yr_end)
+	days["simple_return"] = days["Close"] / days["Close"].shift(1) - 1
+	# Calculate cumulative simple return in percentage
+	days['this_yr'] = (1 + days['simple_return']).cumprod() - 1
+	days['this_yr'] *= 100
 	days['day_of_year'] = days.index.day_of_year
-	days['this_yr']=days.log_return.cumsum()
 	days2=days.reset_index(drop=True)
 	length=len(days)+adjust
+
 
 
 	#create your list of all years
@@ -228,8 +257,6 @@ def seasonals_chart(tick):
 	###this process is repeated for each cycle year, and for 5d 10d and 21d forward returns. 
 	df_all_5d=pd.DataFrame(yr_master2).round(3)
 	df_all_5d_mean=df_all_5d.mean().round(2)
-	df_all_5d_mad=df_all_5d.mad().round(2)
-	df_all_5d_median=df_all_5d.median().round(2)
 	rank=df_all_5d.rank(pct=True).round(3)*100
 
 	df_mt_5d=pd.DataFrame(yr_master_mid2).round(3)
@@ -252,8 +279,6 @@ def seasonals_chart(tick):
 
 	df_all_10d=pd.DataFrame(yr_master3).round(3)
 	df_all_10d_mean=df_all_10d.mean().round(2)
-	df_all_10d_mad=df_all_10d.mad().round(2)
-	df_all_10d_median=df_all_10d.median().round(2)
 	rank3=df_all_10d.rank(pct=True).round(3)*100
 
 	df_mt_10d=pd.DataFrame(yr_master_mid3).round(3)
@@ -276,13 +301,10 @@ def seasonals_chart(tick):
 
 	df_all_21d=pd.DataFrame(yr_master4).round(3)
 	df_all_21d_mean=df_all_21d.mean().round(2)
-	df_all_21d_mad=df_all_21d.mad().round(2)
-	df_all_21d_median=df_all_21d.median().round(2)
 	rank5=df_all_21d_mean.rank(pct=True).round(3)*100
 
 	df_mt_21d=pd.DataFrame(yr_master_mid4).round(3)
 	df_mt_21d_mean=df_mt_21d.mean().round(2)
-	df_mt_21d_mad=df_mt_21d.mad().round(2)
 	df_mt_21d_median=df_mt_21d.median().round(2)
 	rank6=df_mt_21d_mean.rank(pct=True).round(3)*100
 
@@ -343,20 +365,18 @@ def seasonals_chart(tick):
 
 
 	returns=[]
-	tuples=[df_all_5d_mean,df_mt_5d_mean,df_all_5d_mad,df_mt_5d_mad,df_all_10d_mean,df_mt_10d_mean,df_all_10d_mad,df_mt_10d_mad,df_all_21d_mean,df_mt_21d_mean,df_all_21d_mad,df_mt_21d_mad]
+	tuples = [df_all_5d_mean, df_mt_5d_mean, df_all_10d_mean, df_mt_10d_mean, df_all_21d_mean, df_mt_21d_mean]
 	for data in tuples:
-		returns.append(data)
-	new_df=pd.DataFrame(returns).transpose().rename(columns={
-															0:'Fwd_R5',1:'Fwd_R5_MT',2:'Fwd_mad5',3:'Fwd_mad5_MT',
-															4:'Fwd_R10',5:'Fwd_R10_MT',6:'Fwd_mad10',7:'Fwd_mad10_MT',
-															8:'Fwd_R21',9:'Fwd_R21_MT',10:'Fwd_mad21',11:'Fwd_mad21_MT',
-
+	    returns.append(data)
+	new_df = pd.DataFrame(returns).transpose().rename(columns={
+								0:'Fwd_R5', 1:'Fwd_R5_MT', 
+								2:'Fwd_R10', 3:'Fwd_R10_MT', 
+								4:'Fwd_R21', 5:'Fwd_R21_MT',
 	})
+
 
 	#5d stuff
 
-	new_df['Variance_rnk']=new_df.Fwd_mad5.rank(pct=True).round(3)*100
-	new_df['Variance_rnk_MT']=new_df.Fwd_mad5_MT.rank(pct=True).round(3)*100
 	new_df['Returns_5_rnk']=new_df.Fwd_R5.rank(pct=True).round(3)*100
 	new_df['Returns_5_rnk_mt']=new_df.Fwd_R5_MT.rank(pct=True).round(3)*100
 
@@ -364,13 +384,9 @@ def seasonals_chart(tick):
 	r_5_mt=new_df['Fwd_R5_MT'][[length]].round(2)
 	r_5_ptile=new_df['Returns_5_rnk'][[length]].round(2)
 	r_5_ptile_mt=new_df['Returns_5_rnk_mt'][[length]].round(2)
-	variance_ptile=new_df['Variance_rnk'][[length]].round(2)
-	variance_ptile_mt=new_df['Variance_rnk_MT'][[length]].round(2)
 
 	#10d stuff
 
-	new_df['Variance_rnk_10d']=new_df.Fwd_mad10.rank(pct=True).round(3)*100
-	new_df['Variance_rnk_10d_MT']=new_df.Fwd_mad10_MT.rank(pct=True).round(3)*100
 	new_df['Returns_10_rnk']=new_df.Fwd_R10.rank(pct=True).round(3)*100
 	new_df['Returns_10_rnk_mt']=new_df.Fwd_R10_MT.rank(pct=True).round(3)*100
 
@@ -378,12 +394,8 @@ def seasonals_chart(tick):
 	r_10_mt=new_df['Fwd_R10_MT'][[length]].round(2)
 	r_10_ptile=new_df['Returns_10_rnk'][[length]].round(2)
 	r_10_ptile_mt=new_df['Returns_10_rnk_mt'][[length]].round(2)
-	variance_ptile_10=new_df['Variance_rnk_10d'][[length]].round(2)
-	variance_ptile_10_mt=new_df['Variance_rnk_10d_MT'][[length]].round(2)
 
 	#21d stuff
-	new_df['Variance_rnk_1m']=new_df.Fwd_mad21.rank(pct=True).round(3)*100
-	new_df['Variance_rnk_1m_MT']=new_df.Fwd_mad21_MT.rank(pct=True).round(3)*100
 	new_df['Returns_21_rnk']=new_df.Fwd_R21.rank(pct=True).round(3)*100
 	new_df['Returns_21_rnk_mt']=new_df.Fwd_R21_MT.rank(pct=True).round(3)*100
 
@@ -400,8 +412,6 @@ def seasonals_chart(tick):
 	r_21_mt=new_df['Fwd_R21_MT'][[length]].round(2)
 	r_21_ptile=new_df['Returns_21_rnk'][[length]].round(2)
 	r_21_ptile_mt=new_df['Returns_21_rnk_mt'][[length]].round(2)
-	variance_ptile_21=new_df['Variance_rnk_1m'][[length]].round(2)
-	variance_ptile_21_mt=new_df['Variance_rnk_1m_MT'][[length]].round(2)
 
 
 	##Output
@@ -436,13 +446,21 @@ def seasonals_chart(tick):
 	dfy1=dfy.mean()
 	s3=dfy1.cumsum()
 	##Mean Return paths chart (looks like a classic 'seasonality' chart)
-	# plot2=plt.figure(2)
+
+	# Assuming df is your DataFrame and it has 'Close' column
+	df['max_rolling'] = df['Close'].rolling(window=41).max().shift(-20)
+	df['min_rolling'] = df['Close'].rolling(window=41).min().shift(-20)
+
+	df['pivot_point'] = np.where((df['Close'] == df['max_rolling']) | (df['Close'] == df['min_rolling']), df['Close'], np.nan)
+
+	# Get pivot points for the last 252 days
+	pivot_points_last_252 = df[df['pivot_point'].notna()].tail(252)
+
 	fig = go.Figure()
 
 	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name=cycle_label, line=dict(color='orange')))
 	if plot_ytd == 'Yes':
 	    fig.add_trace(go.Scatter(x=days2.index, y=days2['this_yr'], mode='lines', name='Year to Date', line=dict(color='green')))
-
 	y1 = max(s4.max(), days2['this_yr'].max()) if plot_ytd == 'Yes' else s4.max()
 	y0=min(s4.min(),days2['this_yr'].min(),0)
 	# Assuming 'length' variable is defined and within the range of the x-axis
@@ -557,7 +575,50 @@ def seasonals_chart(tick):
 	    paper_bgcolor='Black',
 	    annotations=annotations  # Use the new annotations list with colored text
 	)
+	# Create a candlestick chart
+	fig2 = go.Figure()
+
+	# Add only the Price (Candlestick) trace and the 200_MA trace
+	fig2.add_trace(go.Candlestick(x=df['date_str'],
+				     open=df['Open'],
+				     high=df['High'],
+				     low=df['Low'],
+				     close=df['Close'], name='Price'))
+
+	fig2.add_trace(go.Scatter(x=df['date_str'], y=df['200_MA'], name='200_MA', line=dict(color='purple')))
+	fig2.add_trace(go.Scatter(x=df['date_str'], y=df['200_WMA'], name='200_WMA', line=dict(color='red', dash='dot')))
+
+	# Add pivot point rays
+	for _, row in pivot_points_last_252.iterrows():
+	    fig2.add_shape(type='line',
+			  x0=row['date_str'], y0=row['pivot_point'], x1=df['date_str'].iloc[-1], y1=row['pivot_point'],
+			  xref='x', yref='y',
+			  line=dict(color='Orange', width=1))
+
+	# Finalize layout
+	fig2.update_layout(height=800,
+			  width=1200,
+			  xaxis=dict(
+			      rangeslider=dict(
+				  visible=False
+			      )
+			  ))
+
+	fig2.update_xaxes(showgrid=False)
+	fig2.update_yaxes(showgrid=False)
+	
+	fig3 = go.Figure(data=[go.Table(
+	    header=dict(values=list(df.columns),
+			fill_color='paleturquoise',
+			align='left'),
+	    cells=dict(values=[df[col] for col in df.columns],
+		       fill_color='lavender',
+		       align='left'))
+	])
 	st.plotly_chart(fig)
+	st.plotly_chart(fig2)
+	st.plotly_chart(fig3)
+
 if st.button('Plot'):
 	try:
 		seasonals_chart(stock)
