@@ -39,7 +39,7 @@ def seasonals_chart(tick):
 	# Calculate Average True Range (ATR)
 	atr = AverageTrueRange(df['High'], df['Low'], df['Close'], 14).average_true_range()
 	df['ATR'] = atr
-	df['ATR_from_MA'] = abs(df['Close'] - df['200_MA']) / df['ATR']
+	df['ATR_from_MA'] = (df['Close'] - df['200_MA']) / df['ATR']
 	df['ATR_percentile_rank'] = df['ATR_from_MA'].rank(pct=True) * 100
 	df['Above_200_MA'] = np.where(df['Close'] > df['200_MA'], 'Above', 'Below')
 	df['Above_200_WMA'] = np.where(df['Close'] > df['200_WMA'], 'Above', 'Below')
