@@ -608,22 +608,17 @@ def seasonals_chart(tick):
 	fig2.update_xaxes(showgrid=False)
 	fig2.update_yaxes(showgrid=False)
 	def color_cells(val):
+		color = 'white'
 		if isinstance(val, str):
 			if val == 'Above' or val == 'Positive':
-				color = 'green'
+			    color = 'green'
 			elif val == 'Below' or val == 'Negative':
-				color = 'red'
-			else:
-				color = 'white'
-		else:  # float
+			    color = 'red'
+		elif isinstance(val, (int, float)) and not pd.isnull(val):  # check if value is a number and is not null
 			if val < 10:
-				color = 'green'
-			elif val > 90:
-				color = 'red'
-			elif val > 9:  # for ATR_from_MA column
-				color = 'red'
-			else:
-				color = 'white'
+			    color = 'green'
+			elif val > 90 or val > 9:  # for ATR_from_MA column
+			    color = 'red'
 		return color
 	color_list = df.applymap(color_cells)
 	fig3 = go.Figure(data=[go.Table(
