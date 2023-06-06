@@ -614,13 +614,20 @@ def seasonals_chart(tick):
 			    color = 'green'
 			elif val == 'Below' or val == 'Negative':
 			    color = 'red'
-		elif isinstance(val, (int, float)) and not pd.isnull(val):  # check if value is a number and is not null
-			if val < 10:
-			    color = 'green'
-			elif val > 90 or val > 9:  # for ATR_from_MA column
-			    color = 'red'
+		elif isinstance(val, (int, float)) and not pd.isnull(val):
+			if col_name == 'ATR':
+			    if val > 3:  # Choose your threshold for the ATR column
+				color = 'red'
+			elif col_name == 'ATR_from_MA':
+			    if val > 9:
+				color = 'red'
+			elif col_name == 'ATR_percentile_rank':
+			    if val < 10:
+				color = 'green'
+			    elif val > 90:
+				color = 'red'
 		return color
-	color_list = df.applymap(color_cells)
+	color_list = df.apply(lambda x: [color_cells(v, x.name) for v in x])
 	fig3 = go.Figure(data=[go.Table(
 	    header=dict(
 		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
