@@ -607,8 +607,26 @@ def seasonals_chart(tick):
 
 	fig2.update_xaxes(showgrid=False)
 	fig2.update_yaxes(showgrid=False)
+	def color_cells(val):
+	    if isinstance(val, str):
+		if val == 'Above' or val == 'Positive':
+		    color = 'green'
+		elif val == 'Below' or val == 'Negative':
+		    color = 'red'
+		else:
+		    color = 'white'
+	    else:  # float
+		if val < 10:
+		    color = 'green'
+		elif val > 90:
+		    color = 'red'
+		elif val > 9:  # for ATR_from_MA column
+		    color = 'red'
+		else:
+		    color = 'white'
+	    return color
+	color_list = df.applymap(color_cells)
 	fig3 = go.Figure(data=[go.Table(
-	    columnwidth=[1, 2, 2, 1.5, 1.5, 2, 2],  # adjust these values as needed
 	    header=dict(
 		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
 		fill_color='paleturquoise',
@@ -620,12 +638,14 @@ def seasonals_chart(tick):
 		    ['{:.1f}'.format(val) if isinstance(val, float) else val for val in df[col]] 
 		    for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
 		],
-		fill_color='lavender',
+		fill_color=[
+		    [color_list[col][i] for i in range(len(df))] 
+		    for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
+		],
 		align='left',
 		font=dict(color='black')
 	    )
 	)])
-
 	st.plotly_chart(fig)
 
 	st.plotly_chart(fig2)
