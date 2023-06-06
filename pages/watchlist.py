@@ -579,7 +579,7 @@ def seasonals_chart(tick):
 	    plot_bgcolor='Black',
 	    paper_bgcolor='Black',
 	    annotations=annotations,
-	    width = 1200
+	    width = 1200,
 	    height = 1000# Use the new annotations list with colored text
 	)
 	# Create a candlestick chart
