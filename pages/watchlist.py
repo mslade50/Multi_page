@@ -34,12 +34,17 @@ def seasonals_chart(tick):
 	df['RSI'] = RSIIndicator(df['Close']).rsi()
 
 	# Calculate Average True Range (ATR)
-	atr = AverageTrueRange(df['High'], df['Low'], df['Close'], n=14).average_true_range()
+	atr = AverageTrueRange(df['High'], df['Low'], df['Close'], 14).average_true_range()
 	df['ATR'] = atr
 	df['ATR_from_MA'] = abs(df['Close'] - df['200_MA']) / df['ATR']
 	df['ATR_percentile_rank'] = df['ATR_from_MA'].rank(pct=True) * 100
 	df['Above_200_MA'] = np.where(df['Close'] > df['200_MA'], 'Above', 'Below')
 	df['Above_200_WMA'] = np.where(df['Close'] > df['200_WMA'], 'Above', 'Below')
+	df['200_MA_slope'] = df['200_MA'] - df['200_MA'].shift(10)
+	df['200_MA_slope'] = np.where(df['200_MA_slope'] > 0, 'Positive', 'Negative')
+
+	df['965_MA_slope'] = df['200_WMA'] - df['200_WMA'].shift(10)
+	df['965_MA_slope'] = np.where(df['965_MA_slope'] > 0, 'Positive', 'Negative')
 
 	df = df[-252:]
 	df.reset_index(inplace=True)
@@ -604,12 +609,12 @@ def seasonals_chart(tick):
 	fig2.update_yaxes(showgrid=False)
 	fig3 = go.Figure(data=[go.Table(
 	    header=dict(
-		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', 'slope_200_MA', 'slope_965_MA'],
+		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
 		fill_color='paleturquoise',
 		align='left'
 	    ),
 	    cells=dict(
-		values=[df[col] for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', 'slope_200_MA', 'slope_965_MA']],
+		values=[df[col] for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']],
 		fill_color='lavender',
 		align='left'
 	    )
