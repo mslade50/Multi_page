@@ -544,9 +544,9 @@ def seasonals_chart(tick):
 
 	annotations = [
 	    create_annotation(0.6, -0.18, f"Cycle Avg: {cycle_avg}", text_color(cycle_avg)),
-	    create_annotation(0.7, -0.18, f"Total Avg: {total_avg}", text_color(total_avg)),
-	    create_annotation(0.8, -0.18, f"Trailing 21 Rank: {trailing_21_rank}", text_color(trailing_21_rank, reverse=True)),
-	    create_annotation(0.9, -0.18, f"Trailing 5 Rank: {trailing_5_rank}", text_color(trailing_5_rank, reverse=True)),
+	    create_annotation(0.75, -0.18, f"Total Avg: {total_avg}", text_color(total_avg)),
+	    create_annotation(0.9, -0.18, f"Trailing 21 Rank: {trailing_21_rank}", text_color(trailing_21_rank, reverse=True)),
+	    create_annotation(1.05, -0.18, f"Trailing 5 Rank: {trailing_5_rank}", text_color(trailing_5_rank, reverse=True)),
 	]
 	annotations.append(
 	    create_annotation(
