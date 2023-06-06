@@ -40,7 +40,7 @@ def seasonals_chart(tick):
 	df['ATR_percentile_rank'] = df['ATR_from_MA'].rank(pct=True) * 100
 	df['Above_200_MA'] = np.where(df['Close'] > df['200_MA'], 'Above', 'Below')
 	df['Above_200_WMA'] = np.where(df['Close'] > df['200_WMA'], 'Above', 'Below')
-	df['200_MA_slope'] = df['200_MA'] - df['200_MA'].shift(10)
+	df['200_MA_slope'] = df['200_MA'] - df['200_MA'].shift(1)
 	df['200_MA_slope'] = np.where(df['200_MA_slope'] > 0, 'Positive', 'Negative')
 
 	df['965_MA_slope'] = df['200_WMA'] - df['200_WMA'].shift(10)
@@ -627,7 +627,8 @@ def seasonals_chart(tick):
 			    return "red"
 		else:
 			return "white"
-	# define columns of interest
+
+	df = df.iloc[::-1]
 	cols_of_interest = ['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
 	color_list = df[cols_of_interest].apply(lambda x: [color_cells(v, x.name) for v in x])
 
