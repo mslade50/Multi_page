@@ -627,7 +627,11 @@ def seasonals_chart(tick):
 				elif val > 90:
 					color = 'red'
 		return color
-	color_list = df.apply(lambda x: [color_cells(v, x.name) for v in x])
+	# define columns of interest
+	cols_of_interest = ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
+
+	# apply color_cells function to each element in dataframe df for the columns of interest
+	color_list = df[cols_of_interest].apply(lambda x: [color_cells(v, x.name) for v in x])
 	fig3 = go.Figure(data=[go.Table(
 	    header=dict(
 		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
