@@ -615,7 +615,7 @@ def seasonals_chart(tick):
 	    )
 	)])
 
-st.plotly_chart(fig3)
+	st.plotly_chart(fig3)
 
 	st.plotly_chart(fig)
 	st.plotly_chart(fig2)
