@@ -621,7 +621,4 @@ def seasonals_chart(tick):
 	st.plotly_chart(fig2)
 
 if st.button('Plot'):
-	try:
-		seasonals_chart(stock)
-	except:
-		st.error('Error retrieving data. Please check the ticker and try again.')
+	seasonals_chart(stock)
