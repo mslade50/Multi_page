@@ -611,7 +611,7 @@ def seasonals_chart(tick):
 	    header=dict(
 		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
 		fill_color='paleturquoise',
-		align='left'
+		align='left',
 		font=dict(color='black'
 	    ),
 	    cells=dict(
