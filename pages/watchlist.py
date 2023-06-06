@@ -16,50 +16,50 @@ from ta.volatility import AverageTrueRange
 st.title("User Input")
 stock = st.text_input("Enter a stock ticker:", value="AAPL")
 def seasonals_chart(tick):
-    ticker=tick
-    cycle_start=1951
-    cycle_label='Midterms'
-    cycle_var='pre_election'
-    adjust=0
-    plot_ytd="Yes"
-    all_=""
-    end_date=dt.datetime(2022,12,30)
-    this_yr_end=dt.date.today()
+	ticker=tick
+	cycle_start=1951
+	cycle_label='Midterms'
+	cycle_var='pre_election'
+	adjust=0
+	plot_ytd="Yes"
+	all_=""
+	end_date=dt.datetime(2022,12,30)
+	this_yr_end=dt.date.today()
 
-    spx1=yf.Ticker(ticker)
-    spx = spx1.history(period="max",end=end_date)
-    df= spx1.history(period="max")
-    df['200_MA'] = df['Close'].rolling(window=200).mean()
-    df['200_WMA'] = df['Close'].rolling(window=965).mean()
-    df['RSI'] = RSIIndicator(df['Close']).rsi()
-    
-    # Calculate Average True Range (ATR)
-    atr = AverageTrueRange(df['High'], df['Low'], df['Close'], n=14).average_true_range()
-    df['ATR'] = atr
-    df['ATR_from_MA'] = abs(df['Close'] - df['200_MA']) / df['ATR']
-    df['ATR_percentile_rank'] = df['ATR_from_MA'].rank(pct=True) * 100
-    df['Above_200_MA'] = np.where(df['Close'] > df['200_MA'], 'Above', 'Below')
-    df['Above_200_WMA'] = np.where(df['Close'] > df['200_WMA'], 'Above', 'Below')
+	spx1=yf.Ticker(ticker)
+	spx = spx1.history(period="max",end=end_date)
+	df= spx1.history(period="max")
+	df['200_MA'] = df['Close'].rolling(window=200).mean()
+	df['200_WMA'] = df['Close'].rolling(window=965).mean()
+	df['RSI'] = RSIIndicator(df['Close']).rsi()
 
-    df = df[-252:]
-    df.reset_index(inplace=True)
-    df['date_str'] = range(1,len(df)+1)
-    spx_rank=spx1.history(period="max",end=this_yr_end)
+	# Calculate Average True Range (ATR)
+	atr = AverageTrueRange(df['High'], df['Low'], df['Close'], n=14).average_true_range()
+	df['ATR'] = atr
+	df['ATR_from_MA'] = abs(df['Close'] - df['200_MA']) / df['ATR']
+	df['ATR_percentile_rank'] = df['ATR_from_MA'].rank(pct=True) * 100
+	df['Above_200_MA'] = np.where(df['Close'] > df['200_MA'], 'Above', 'Below')
+	df['Above_200_WMA'] = np.where(df['Close'] > df['200_WMA'], 'Above', 'Below')
 
-    # Calculate trailing 5-day returns
-    spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
+	df = df[-252:]
+	df.reset_index(inplace=True)
+	df['date_str'] = range(1,len(df)+1)
+	spx_rank=spx1.history(period="max",end=this_yr_end)
 
-    # Calculate trailing 21-day returns
-    spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
+	# Calculate trailing 5-day returns
+	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
 
-    # Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
-    spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	# Calculate trailing 21-day returns
+	spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
 
-    # Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
-    spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	# Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
+	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
-    dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
-    dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
+	# Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
+	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+
+	dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
+	dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
 
 	spx["log_return"] = np.log(spx["Close"] / spx["Close"].shift(1))*100
 
