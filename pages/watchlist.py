@@ -614,16 +614,20 @@ def seasonals_chart(tick):
 		align='left'
 	    ),
 	    cells=dict(
-		values=[df[col] for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']],
+		values=[
+		    ['{:.1f}'.format(val) if isinstance(val, float) else val for val in df[col]] 
+		    for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
+		],
 		fill_color='lavender',
-		align='left'
+		align='left',
+		font=dict(color='black')
 	    )
 	)])
 
-	st.plotly_chart(fig3)
-
 	st.plotly_chart(fig)
+
 	st.plotly_chart(fig2)
+	st.plotly_chart(fig3)
 
 if st.button('Plot'):
 	seasonals_chart(stock)
