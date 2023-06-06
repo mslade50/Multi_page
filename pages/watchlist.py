@@ -622,8 +622,8 @@ def seasonals_chart(tick):
 				color = 'red'
 			elif val > 9:  # for ATR_from_MA column
 				color = 'red'
-		else:
-		    color = 'white'
+			else:
+				color = 'white'
 		return color
 	color_list = df.applymap(color_cells)
 	fig3 = go.Figure(data=[go.Table(
