@@ -608,27 +608,27 @@ def seasonals_chart(tick):
 	fig2.update_xaxes(showgrid=False)
 	fig2.update_yaxes(showgrid=False)
 	def color_cells(val, col_name):
-	if col_name == 'ATR_percentile_rank':
-		if val < 10:
-		    return "green"
-		elif val > 90:
-		    return "red"
+		if col_name == 'ATR_percentile_rank':
+			if val < 10:
+			    return "green"
+			elif val > 90:
+			    return "red"
+			else:
+			    return "black"
+		elif col_name == 'ATR_from_MA':
+			if val > 9:  # or any other threshold you want to set
+			    return "red"
+			else:
+			    return "black"
+		elif col_name == 'ATR':
+			return "black"  # or any other default color for this column
+		elif col_name in ['Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']:
+			if val == 'Above' or val == 'Positive':
+			    return "green"
+			else:
+			    return "red"
 		else:
-		    return "black"
-	elif col_name == 'ATR_from_MA':
-		if val > 9:  # or any other threshold you want to set
-		    return "red"
-		else:
-		    return "black"
-	elif col_name == 'ATR':
-		return "black"  # or any other default color for this column
-	elif col_name in ['Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']:
-		if val == 'Above' or val == 'Positive':
-		    return "green"
-		else:
-		    return "red"
-	else:
-		return "black"
+			return "black"
 	# define columns of interest
 	cols_of_interest = ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
 
