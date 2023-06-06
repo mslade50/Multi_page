@@ -614,7 +614,6 @@ def seasonals_chart(tick):
 		align='left'
 	    )
 	)])
-	])
 
 st.plotly_chart(fig3)
 
