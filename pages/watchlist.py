@@ -620,8 +620,6 @@ def seasonals_chart(tick):
 			    return "red"
 			else:
 			    return "white"
-		elif col_name == 'ATR':
-			return "black"  # or any other default color for this column
 		elif col_name in ['Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']:
 			if val == 'Above' or val == 'Positive':
 			    return "green"
@@ -630,26 +628,23 @@ def seasonals_chart(tick):
 		else:
 			return "white"
 	# define columns of interest
-	cols_of_interest = ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
+	cols_of_interest = ['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
 
 	# apply color_cells function to each element in dataframe df for the columns of interest
 	color_list = df[cols_of_interest].apply(lambda x: [color_cells(v, x.name) for v in x])
 	fig3 = go.Figure(data=[go.Table(
 	    header=dict(
-		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
+		values=['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
 		fill_color='paleturquoise',
 		align='left',
 		font=dict(color='black')
 	    ),
 	    cells=dict(
 		values=[
-		    ['{:.1f}'.format(val) if isinstance(val, float) else val for val in df[col]] 
-		    for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
+		    df[col].tolist() if col == 'Date' else ['{:.1f}'.format(val) if isinstance(val, float) else val for val in df[col]] 
+		    for col in ['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
 		],
-		fill_color=[
-		    [color_list[col][i] for i in range(len(df))] 
-		    for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
-		],
+		fill_color='lavender',
 		align='left',
 		font=dict(color='black')
 	    )
