@@ -11,58 +11,55 @@ import streamlit as st
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 from ta.momentum import RSIIndicator
+from ta.volatility import AverageTrueRange
 
 st.title("User Input")
 stock = st.text_input("Enter a stock ticker:", value="AAPL")
 def seasonals_chart(tick):
-	ticker=tick
-	cycle_start=1951
-	cycle_label='Midterms'
-	cycle_var='pre_election'
-	adjust=0
-	plot_ytd="Yes"
-	all_=""
-	end_date=dt.datetime(2022,12,30)
-	this_yr_end=dt.date.today()
+    ticker=tick
+    cycle_start=1951
+    cycle_label='Midterms'
+    cycle_var='pre_election'
+    adjust=0
+    plot_ytd="Yes"
+    all_=""
+    end_date=dt.datetime(2022,12,30)
+    this_yr_end=dt.date.today()
 
+    spx1=yf.Ticker(ticker)
+    spx = spx1.history(period="max",end=end_date)
+    df= spx1.history(period="max")
+    df['200_MA'] = df['Close'].rolling(window=200).mean()
+    df['200_WMA'] = df['Close'].rolling(window=965).mean()
+    df['RSI'] = RSIIndicator(df['Close']).rsi()
+    
+    # Calculate Average True Range (ATR)
+    atr = AverageTrueRange(df['High'], df['Low'], df['Close'], n=14).average_true_range()
+    df['ATR'] = atr
+    df['ATR_from_MA'] = abs(df['Close'] - df['200_MA']) / df['ATR']
+    df['ATR_percentile_rank'] = df['ATR_from_MA'].rank(pct=True) * 100
+    df['Above_200_MA'] = np.where(df['Close'] > df['200_MA'], 'Above', 'Below')
+    df['Above_200_WMA'] = np.where(df['Close'] > df['200_WMA'], 'Above', 'Below')
 
-	spx1=yf.Ticker(ticker)
-	spx = spx1.history(period="max",end=end_date)
-	df= spx1.history(period="max")
-	def calculate_atr_percentile(close_prices, ma_200, ma_965):
-	    atr = abs(close_prices - ma_200)
-	    atr_percentile = atr.rank(pct=True) * 100
-	    above_ma_200 = np.where(close_prices > ma_200, 'Above', 'Below')
-	    above_ma_965 = np.where(close_prices > ma_965, 'Above', 'Below')
-	    return atr, atr_percentile, above_ma_200, above_ma_965
-	def calculate_slope(y_values):
-	    x_values = np.arange(len(y_values))
-	    return np.polyfit(x_values, y_values, 1)[0]
-	df['date'] = s4.index[-5:]
-	df['atr'], df['atr_percentile'], df['above_ma_200'], df['above_ma_965'] = calculate_atr_percentile(df['close'], df['ma_200'], df['ma_965'])
-	df['200_MA'] = df['Close'].rolling(window=200).mean()
-	df['200_WMA'] = df['Close'].rolling(window=965).mean()
-	df['RSI'] = RSIIndicator(df['Close']).rsi()
-	df['slope_ma_200'] = calculate_slope(df['ma_200'].values)
-	df['slope_ma_965'] = calculate_slope(df['ma_965'].values)
-	df = df[-252:]
-	df.reset_index(inplace=True)
-	df['date_str'] = range(1,len(df)+1)
-	spx_rank=spx1.history(period="max",end=this_yr_end)
-	# Calculate trailing 5-day returns
-	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
+    df = df[-252:]
+    df.reset_index(inplace=True)
+    df['date_str'] = range(1,len(df)+1)
+    spx_rank=spx1.history(period="max",end=this_yr_end)
 
-	# Calculate trailing 21-day returns
-	spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
+    # Calculate trailing 5-day returns
+    spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
 
-	# Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
-	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+    # Calculate trailing 21-day returns
+    spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
 
-	# Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
-	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+    # Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
+    spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
-	dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
-	dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
+    # Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
+    spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+
+    dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
+    dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
 
 	spx["log_return"] = np.log(spx["Close"] / spx["Close"].shift(1))*100
 
@@ -605,24 +602,27 @@ def seasonals_chart(tick):
 
 	fig2.update_xaxes(showgrid=False)
 	fig2.update_yaxes(showgrid=False)
-	
 	fig3 = go.Figure(data=[go.Table(
-	    header=dict(values=list(df.columns),
-			fill_color='paleturquoise',
-			align='left'),
-	    cells=dict(values=[df[col] for col in df.columns],
-		       fill_color='lavender',
-		       align='left'))
+	    header=dict(
+		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', 'slope_200_MA', 'slope_965_MA'],
+		fill_color='paleturquoise',
+		align='left'
+	    ),
+	    cells=dict(
+		values=[df[col] for col in ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', 'slope_200_MA', 'slope_965_MA']],
+		fill_color='lavender',
+		align='left'
+	    )
+	)])
 	])
+
+st.plotly_chart(fig3)
+
 	st.plotly_chart(fig)
 	st.plotly_chart(fig2)
-	st.plotly_chart(fig3)
 
 if st.button('Plot'):
 	try:
 		seasonals_chart(stock)
 	except:
 		st.error('Error retrieving data. Please check the ticker and try again.')
-
-
-
