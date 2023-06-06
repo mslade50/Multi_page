@@ -632,6 +632,7 @@ def seasonals_chart(tick):
 
 	# apply color_cells function to each element in dataframe df for the columns of interest
 	color_list = color_list.T.values.tolist()
+
 	fig3 = go.Figure(data=[go.Table(
 	    columnwidth = [1.25, 2, 2, 2, 2, 2, 2],
 	    header=dict(
@@ -643,9 +644,9 @@ def seasonals_chart(tick):
 	    cells=dict(
 		values=[
 		    df[col].tolist() if col == 'Date' else ['{:.1f}'.format(val) if isinstance(val, float) else val for val in df[col]] 
-		    for col in ['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
+		    for col in cols_of_interest
 		],
-		fill_color='lavender',
+		fill_color=color_list,  # Use color_list here
 		align='left',
 		font=dict(color='black')
 	    )
