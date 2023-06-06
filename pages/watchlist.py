@@ -629,6 +629,7 @@ def seasonals_chart(tick):
 			return "white"
 
 	df = df.iloc[::-1]
+	df['Date'] = df['Date'].dt.date
 	cols_of_interest = ['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
 	color_list = df[cols_of_interest].apply(lambda x: [color_cells(v, x.name) for v in x])
 
