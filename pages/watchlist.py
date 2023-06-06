@@ -633,7 +633,7 @@ def seasonals_chart(tick):
 	# apply color_cells function to each element in dataframe df for the columns of interest
 	color_list = df[cols_of_interest].apply(lambda x: [color_cells(v, x.name) for v in x])
 	fig3 = go.Figure(data=[go.Table(
-	    columnwidth = [3, 2, 2, 2, 2, 2, 2],
+	    columnwidth = [1.25, 2, 2, 2, 2, 2, 2],
 	    header=dict(
 		values=['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
 		fill_color='paleturquoise',
