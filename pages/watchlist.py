@@ -614,12 +614,12 @@ def seasonals_chart(tick):
 			elif val > 90:
 			    return "red"
 			else:
-			    return "black"
+			    return "white"
 		elif col_name == 'ATR_from_MA':
 			if val > 9:  # or any other threshold you want to set
 			    return "red"
 			else:
-			    return "black"
+			    return "white"
 		elif col_name == 'ATR':
 			return "black"  # or any other default color for this column
 		elif col_name in ['Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']:
@@ -628,7 +628,7 @@ def seasonals_chart(tick):
 			else:
 			    return "red"
 		else:
-			return "black"
+			return "white"
 	# define columns of interest
 	cols_of_interest = ['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
 
