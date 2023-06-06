@@ -608,6 +608,7 @@ def seasonals_chart(tick):
 	fig2.update_xaxes(showgrid=False)
 	fig2.update_yaxes(showgrid=False)
 	fig3 = go.Figure(data=[go.Table(
+	    columnwidth=[1, 2, 2, 1.5, 1.5, 2, 2]
 	    header=dict(
 		values=['ATR', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
 		fill_color='paleturquoise',
