@@ -543,15 +543,15 @@ def seasonals_chart(tick):
 	    )
 
 	annotations = [
-	    create_annotation(0.55, -0.18, f"Cycle Avg: {cycle_avg}", text_color(cycle_avg)),
-	    create_annotation(0.64, -0.18, f"Total Avg: {total_avg}", text_color(total_avg)),
-	    create_annotation(0.875, -0.18, f"Trailing 21 Rank: {trailing_21_rank}", text_color(trailing_21_rank, reverse=True)),
-	    create_annotation(1, -0.18, f"Trailing 5 Rank: {trailing_5_rank}", text_color(trailing_5_rank, reverse=True)),
+	    create_annotation(0.4, -0.22, f"Cycle Avg: {cycle_avg}", text_color(cycle_avg)),
+	    create_annotation(0.55, -0.22, f"Total Avg: {total_avg}", text_color(total_avg)),
+	    create_annotation(0.85, -0.22, f"Trailing 21 Rank: {trailing_21_rank}", text_color(trailing_21_rank, reverse=True)),
+	    create_annotation(1.04, -0.22, f"Trailing 5 Rank: {trailing_5_rank}", text_color(trailing_5_rank, reverse=True)),
 	]
 	annotations.append(
 	    create_annotation(
 		1.02,
-		1.0,
+		1.10,
 		f"5d and 21d Concordance: {sign_agreement_5d}, {sign_agreement_21d}",
 		'white'
 	    )
@@ -578,9 +578,7 @@ def seasonals_chart(tick):
 	    hovermode='x',
 	    plot_bgcolor='Black',
 	    paper_bgcolor='Black',
-	    annotations=annotations,
-	    width = 1200,
-	    height = 800# Use the new annotations list with colored text
+	    annotations=annotations  # Use the new annotations list with colored text
 	)
 	# Create a candlestick chart
 	fig2 = go.Figure()
