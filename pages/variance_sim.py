@@ -29,13 +29,13 @@ def monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_pat
 def monte_carlo_app():
     st.markdown("# Monte Carlo Simulation")
 
-    win_prob = st.sidebar.number_input("Winning probability", min_value=0.0, max_value=1.0, value=0.6, step=0.01)
-    win_loss_ratio = st.sidebar.number_input("Win/Loss Ratio", min_value=0.0, max_value=2.0, value=0.2, step=0.01)
-    start_capital = st.sidebar.number_input("Starting Capital", min_value=0.0, max_value=1000000.0, value=100000.0, step=100.0)
-    num_trials = st.sidebar.number_input("Number of trials", min_value=0, max_value=10000, value=1000, step=100)
-    bet_sizing = st.sidebar.number_input("Bet Sizing", min_value=0.0, max_value=1.0, value=0.1, step=0.01)
-    num_paths = st.sidebar.number_input("Number of paths", min_value=0, max_value=10000, value=50, step=5)
-    stake_type = st.sidebar.selectbox("Stake Type", ('flat', 'variable'))
+    win_prob = st.number_input("Winning probability", min_value=0.0, max_value=1.0, value=0.6, step=0.01)
+    win_loss_ratio = st.number_input("Win/Loss Ratio", min_value=0.0, max_value=2.0, value=0.2, step=0.01)
+    start_capital = st.number_input("Starting Capital", min_value=0.0, max_value=1000000.0, value=100000.0, step=100.0)
+    num_trials = st.number_input("Number of trials", min_value=0, max_value=10000, value=1000, step=100)
+    bet_sizing = st.number_input("Bet Sizing", min_value=0.0, max_value=1.0, value=0.1, step=0.01)
+    num_paths = st.number_input("Number of paths", min_value=0, max_value=10000, value=50, step=5)
+    stake_type = st.selectbox("Stake Type", ('flat', 'variable'))
 
     if st.button("Run Simulation"):
         paths, negative_endings = monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_paths, bet_sizing, stake_type)
