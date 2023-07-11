@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
+import plotly.graph_objects as go
 
 # User inputs
 st.markdown("# Monte Carlo Simulation")
@@ -70,4 +70,7 @@ def monte_carlo_app():
 
         fig.update_layout(height=600, width=800, title_text="Monte Carlo Simulation Paths")
         st.plotly_chart(fig)
+
+# Call the function
+monte_carlo_app()
 
