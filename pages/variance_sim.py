@@ -49,7 +49,7 @@ def monte_carlo_app():
             # Calculate the initial expected value (EV)
             initial_bet_size = bet_sizing * start_capital if stake_type == 'flat' else bet_sizing * start_capital
             EV = ((win_prob * initial_bet_size * win_loss_ratio) - ((1 - win_prob) * initial_bet_size))
-            st.write(f"Initial Expected Value (EV): {EV}%")
+            st.write(f"Initial Expected Value (EV): ${EV}")
 
             # Calculate the Kelly criterion bet size and round to 2 decimal places
             kelly_fraction = (win_prob * win_loss_ratio - (1 - win_prob)) / win_loss_ratio
@@ -66,7 +66,7 @@ def monte_carlo_app():
             realized_EVs = [path[-1] for path in simulation]  # Profit or loss at the end of each path
             average_realized_EV = np.mean(realized_EVs) / num_trials  # Average profit or loss per trial
             average_realized_EV_rounded = round(average_realized_EV, 2)
-            st.write(f"Realized Expected Value (EV) per trade: {average_realized_EV_rounded}")
+            st.write(f"Realized Expected Value (EV) per trade: ${average_realized_EV_rounded}")
             
             # Create DataFrame for Plotly
             df = pd.DataFrame(simulation).T
