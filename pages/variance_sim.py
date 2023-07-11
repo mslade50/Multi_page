@@ -59,7 +59,7 @@ def monte_carlo_app():
             # Calculate the average percentage of paths ending with negative PnL
             negative_endings = [path[-1] < 0 for path in simulation].count(True)
             average_neg_endings = np.mean(negative_endings)
-            average_neg_endings_rounded = round(average_neg_endings / num_paths * 100, 2)
+            average_neg_endings_rounded = round(average_neg_endings/num_paths * 100, 2)
             st.write(f"Avg % of paths ending with negative PnL: {average_neg_endings_rounded}%")
 
             # Calculate the realized EV per trade
@@ -67,28 +67,20 @@ def monte_carlo_app():
             average_realized_EV = np.mean(realized_EVs) / num_trials  # Average profit or loss per trial
             average_realized_EV_rounded = round(average_realized_EV, 2)
             st.write(f"Realized Expected Value (EV) per trade: ${average_realized_EV_rounded}")
-
+            
             # Create DataFrame for Plotly
             df = pd.DataFrame(simulation).T
             df.index.name = "Trial"
             df.columns.name = "Path"
-
+            
             fig = go.Figure()
-
+            
             for path in df.columns:
                 fig.add_trace(go.Scatter(y=df[path], mode='lines', name=f'Path {path}'))
 
+
             fig.update_layout(height=600, width=800, title_text="Monte Carlo Simulation Paths")
             st.plotly_chart(fig)
-
-        # Calculate the average return for all simulation paths
-        all_simulation_paths = [path[-1] for simulation in simulations for path in simulation]
-        average_return = np.mean(all_simulation_paths)
-        st.write(f"Average Return for all simulation paths: ${round(average_return, 2)}")
-
-        # Calculate the median return for all simulation paths
-        median_return = np.median(all_simulation_paths)
-        st.write(f"Median Return for all simulation paths: ${round(median_return, 2)}")
 
 # Call the function
 monte_carlo_app()
