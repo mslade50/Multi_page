@@ -74,7 +74,9 @@ def monte_carlo_app():
             fig = go.Figure()
             
             for path in df.columns:
-                 fig.add_trace(go.Scatter(y=df[path], mode='lines', name=f'Path {path}'))
+                color = 'green' if df[path].iloc[-1] > 0 else 'red'  # Choose color based on final value
+                fig.add_trace(go.Scatter(y=df[path], mode='lines', name=f'Path {path}', line=dict(color=color)))
+
 
             fig.update_layout(height=600, width=800, title_text="Monte Carlo Simulation Paths")
             st.plotly_chart(fig)
