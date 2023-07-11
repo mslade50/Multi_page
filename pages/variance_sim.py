@@ -41,42 +41,41 @@ def monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_pat
 
 def monte_carlo_app():
     if st.button("Run Simulation"):
-    simulations = monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_paths, bet_sizing, stake_type, num_simulations)
+        simulations = monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_paths, bet_sizing, stake_type, num_simulations)
+        for i, simulation in enumerate(simulations):
+            st.markdown(f"### Simulation {i+1}")
 
-    for i, simulation in enumerate(simulations):
-        st.markdown(f"### Simulation {i+1}")
-
-        # Calculate the initial expected value (EV)
-        initial_bet_size = bet_sizing * start_capital if stake_type == 'flat' else bet_sizing * start_capital
-        EV = ((win_prob * initial_bet_size * win_loss_ratio) - ((1 - win_prob) * initial_bet_size))
-        st.write(f"Initial Expected Value (EV): ${EV}")
-
-        # Calculate the Kelly criterion bet size and round to 2 decimal places
-        kelly_fraction = (win_prob * win_loss_ratio - (1 - win_prob)) / win_loss_ratio
-        kelly_fraction = round(kelly_fraction, 2)  # round to 2 decimal places
-        st.write(f"Kelly criterion bet size (% of capital): {kelly_fraction * 100}%")
-
-        # Calculate the average percentage of paths ending with negative PnL
-        negative_endings = [path[-1] < 0 for path in simulation].count(True)
-        average_neg_endings = np.mean(negative_endings)
-        average_neg_endings_rounded = round(average_neg_endings / num_paths * 100, 2)
-        st.write(f"Avg % of paths ending with negative PnL: {average_neg_endings_rounded}%")
-
-        # Calculate the realized EV per trade
-        realized_EVs = [path[-1] for path in simulation]  # Profit or loss at the end of each path
-        average_realized_EV = np.mean(realized_EVs) / num_trials  # Average profit or loss per trial
-        average_realized_EV_rounded = round(average_realized_EV, 2)
-        st.write(f"Realized Expected Value (EV) per trade: ${average_realized_EV_rounded}")
-
-        # Create DataFrame for Plotly
-        df = pd.DataFrame(simulation).T
-        df.index.name = "Trial"
-        df.columns.name = "Path"
-
-        fig = go.Figure()
-
-        for path in df.columns:
-            fig.add_trace(go.Scatter(y=df[path], mode='lines', name=f'Path {path}'))
+            # Calculate the initial expected value (EV)
+            initial_bet_size = bet_sizing * start_capital if stake_type == 'flat' else bet_sizing * start_capital
+            EV = ((win_prob * initial_bet_size * win_loss_ratio) - ((1 - win_prob) * initial_bet_size))
+            st.write(f"Initial Expected Value (EV): ${EV}")
+    
+            # Calculate the Kelly criterion bet size and round to 2 decimal places
+            kelly_fraction = (win_prob * win_loss_ratio - (1 - win_prob)) / win_loss_ratio
+            kelly_fraction = round(kelly_fraction, 2)  # round to 2 decimal places
+            st.write(f"Kelly criterion bet size (% of capital): {kelly_fraction * 100}%")
+    
+            # Calculate the average percentage of paths ending with negative PnL
+            negative_endings = [path[-1] < 0 for path in simulation].count(True)
+            average_neg_endings = np.mean(negative_endings)
+            average_neg_endings_rounded = round(average_neg_endings / num_paths * 100, 2)
+            st.write(f"Avg % of paths ending with negative PnL: {average_neg_endings_rounded}%")
+    
+            # Calculate the realized EV per trade
+            realized_EVs = [path[-1] for path in simulation]  # Profit or loss at the end of each path
+            average_realized_EV = np.mean(realized_EVs) / num_trials  # Average profit or loss per trial
+            average_realized_EV_rounded = round(average_realized_EV, 2)
+            st.write(f"Realized Expected Value (EV) per trade: ${average_realized_EV_rounded}")
+    
+            # Create DataFrame for Plotly
+            df = pd.DataFrame(simulation).T
+            df.index.name = "Trial"
+            df.columns.name = "Path"
+    
+            fig = go.Figure()
+    
+            for path in df.columns:
+                fig.add_trace(go.Scatter(y=df[path], mode='lines', name=f'Path {path}'))
 
         fig.update_layout(height=600, width=800, title_text="Monte Carlo Simulation Paths")
         st.plotly_chart(fig)
