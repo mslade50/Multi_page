@@ -12,6 +12,7 @@ num_trials = st.number_input("Number of trials", min_value=0, max_value=100000, 
 bet_sizing = st.number_input("Bet Sizing", min_value=0.0, max_value=1.0, value=0.01, step=0.01)
 num_paths = st.number_input("Number of paths", min_value=0, max_value=10000, value=50, step=5)
 stake_type = st.selectbox("Stake Type", ('flat', 'variable'))
+num_simulations = st.number_input("Number of simulations", min_value=1, max_value=100, value=1)
 
 def monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_paths, bet_sizing, stake_type):
     simulations = []
