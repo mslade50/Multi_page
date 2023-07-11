@@ -59,11 +59,13 @@ def monte_carlo_app():
             # Calculate the average percentage of paths ending with negative PnL
             negative_endings = [path[-1] < 0 for path in simulation].count(True)
             average_neg_endings = np.mean(negative_endings)
+            avg_neg_endings_rounded = round(average_neg_endings/num_paths * 100, 2)
             st.write(f"Avg % of paths ending with negative PnL: {average_neg_endings/num_paths*100}%")
 
             # Calculate the realized EV per trade
             realized_EVs = [path[-1] for path in simulation]  # Profit or loss at the end of each path
             average_realized_EV = np.mean(realized_EVs) / num_trials  # Average profit or loss per trial
+            avg_realized_EV_rounded = round(average_realized_EV, 2)
             st.write(f"Realized Expected Value (EV) per trade: {average_realized_EV}")
             
             # Create DataFrame for Plotly
