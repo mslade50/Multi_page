@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 # User inputs
 st.markdown("# Monte Carlo Simulation")
 win_prob = st.number_input("Winning probability", min_value=0.0, max_value=1.0, value=0.4, step=0.01)
-win_loss_ratio = st.number_input("Win/Loss Ratio", min_value=0.01, max_value=200, value=2, step=0.01)
-start_capital = st.number_input("Starting Capital", min_value=0.0, max_value=1000000, value=100000.0, step=100.0)
+win_loss_ratio = st.number_input("Win/Loss Ratio", min_value=0.1, max_value=200, value=2, step=0.01)
+start_capital = st.number_input("Starting Capital", min_value=0.0, max_value=1000000.0, value=100000.0, step=100.0)
 num_trials = st.number_input("Number of trials", min_value=0, max_value=100000, value=1000, step=100)
 bet_sizing = st.number_input("Bet Sizing", min_value=0.0, max_value=1.0, value=0.01, step=0.01)
 num_paths = st.number_input("Number of paths", min_value=0, max_value=10000, value=50, step=5)
