@@ -48,7 +48,7 @@ def monte_carlo_app():
 
             # Calculate the initial expected value (EV)
             initial_bet_size = bet_sizing * start_capital if stake_type == 'flat' else bet_sizing * start_capital
-            EV = ((win_prob * initial_bet_size * win_loss_ratio) - ((1 - win_prob) * initial_bet_size))
+            EV = ((win_prob * initial_bet_size/100 * win_loss_ratio) - ((1 - win_prob) * initial_bet_size/100))
             st.write(f"Initial Expected Value (EV): ${EV}")
 
             # Calculate the Kelly criterion bet size and round to 2 decimal places
