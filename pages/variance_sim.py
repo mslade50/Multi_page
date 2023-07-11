@@ -14,7 +14,7 @@ num_paths = st.number_input("Number of paths", min_value=0, max_value=10000, val
 stake_type = st.selectbox("Stake Type", ('flat', 'variable'))
 num_simulations = st.number_input("Number of simulations", min_value=1, max_value=100, value=1)
 
-def monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_paths, bet_sizing, stake_type):
+def monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_paths, bet_sizing, stake_type, num_simulations):
     simulations = []
     for _ in range(num_simulations):
         paths = []
