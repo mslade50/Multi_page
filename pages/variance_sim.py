@@ -9,7 +9,7 @@ win_prob = st.number_input("Winning probability", min_value=0.0, max_value=1.0, 
 win_loss_ratio = st.number_input("Win/Loss Ratio", min_value=0.1, max_value=20.0, value=2.0, step=0.01)
 start_capital = st.number_input("Starting Capital", min_value=0, max_value=1000000, value=100000, step=100)
 num_trials = st.number_input("Number of trials", min_value=0, max_value=100000, value=1000, step=100)
-bet_sizing = st.number_input("Bet Sizing", min_value=0.0, max_value=1.0, value=0.01, step=0.001)
+bet_sizing = st.number_input("Bet Sizing", min_value=0.000, max_value=1.000, value=0.010, step=0.001)
 num_paths = st.number_input("Number of paths", min_value=0, max_value=10000, value=50, step=5)
 stake_type = st.selectbox("Stake Type", ('flat', 'variable'))
 num_simulations = st.number_input("Number of simulations", min_value=1, max_value=100, value=1)
