@@ -42,6 +42,7 @@ def monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_pat
 def monte_carlo_app():
     if st.button("Run Simulation"):
         simulations = monte_carlo_sim(win_prob, win_loss_ratio, start_capital, num_trials, num_paths, bet_sizing, stake_type, num_simulations)
+
         for i, simulation in enumerate(simulations):
             st.markdown(f"### Simulation {i+1}")
 
