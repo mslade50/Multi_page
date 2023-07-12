@@ -11,7 +11,6 @@ import streamlit as st
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 from ta.momentum import RSIIndicator
-from ta.volatility import AverageTrueRange
 
 st.title("User Input")
 stock = st.text_input("Enter a stock ticker:", value="AAPL")
@@ -26,34 +25,17 @@ def seasonals_chart(tick):
 	end_date=dt.datetime(2022,12,30)
 	this_yr_end=dt.date.today()
 
+
 	spx1=yf.Ticker(ticker)
 	spx = spx1.history(period="max",end=end_date)
 	df= spx1.history(period="max")
-	df.index = pd.to_datetime(df.index)
-	if pd.Timestamp('2001-09-12') in df.index:
-		df = df.drop(pd.Timestamp('2001-09-12'))
 	df['200_MA'] = df['Close'].rolling(window=200).mean()
 	df['200_WMA'] = df['Close'].rolling(window=965).mean()
 	df['RSI'] = RSIIndicator(df['Close']).rsi()
-
-	# Calculate Average True Range (ATR)
-	atr = AverageTrueRange(df['High'], df['Low'], df['Close'], 14).average_true_range()
-	df['ATR'] = atr
-	df['ATR_from_MA'] = (df['Close'] - df['200_MA']) / df['ATR']
-	df['ATR_percentile_rank'] = df['ATR_from_MA'].rank(pct=True) * 100
-	df['Above_200_MA'] = np.where(df['Close'] > df['200_MA'], 'Above', 'Below')
-	df['Above_200_WMA'] = np.where(df['Close'] > df['200_WMA'], 'Above', 'Below')
-	df['200_MA_slope'] = df['200_MA'] - df['200_MA'].shift(1)
-	df['200_MA_slope'] = np.where(df['200_MA_slope'] > 0, 'Positive', 'Negative')
-
-	df['965_MA_slope'] = df['200_WMA'] - df['200_WMA'].shift(10)
-	df['965_MA_slope'] = np.where(df['965_MA_slope'] > 0, 'Positive', 'Negative')
-
 	df = df[-252:]
 	df.reset_index(inplace=True)
 	df['date_str'] = range(1,len(df)+1)
 	spx_rank=spx1.history(period="max",end=this_yr_end)
-
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
 
@@ -430,7 +412,13 @@ def seasonals_chart(tick):
 	total_avg=((all_avg+true_cycle_rnk)/2).round(1) 
 	trailing_21_rank=dr21_rank.round(1)
 	trailing_5_rank=dr5_rank.round(1)
-
+	
+	summary=pd.concat([df_mt_5d[length],df_mt_10d[length],df_mt_21d[length]],axis=1,keys=["f5","f10","f21"])
+	summary['Years']=years_mid
+	summary=summary.dropna()
+	percent_pos_5=round(len(summary.query('f5 > 0'))/len(summary.axes[0]),3)
+	percent_pos_10=round(len(summary.query('f10 > 0'))/len(summary.axes[0]),3)
+	percent_pos_21=round(len(summary.query('f21 > 0'))/len(summary.axes[0]),3)
 
 	if ticker == '^GSPC':
 		ticker2 = 'SPX'
@@ -463,7 +451,6 @@ def seasonals_chart(tick):
 	fig = go.Figure()
 
 	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name=cycle_label, line=dict(color='orange')))
-# 	fig.add_trace(go.Scatter(x=s3.index, y=s3.values, mode='lines', name="All Years", line=dict(color='light blue')))
 	if plot_ytd == 'Yes':
 	    fig.add_trace(go.Scatter(x=days2.index, y=days2['this_yr'], mode='lines', name='Year to Date', line=dict(color='green')))
 	y1 = max(s4.max(), days2['this_yr'].max()) if plot_ytd == 'Yes' else s4.max()
@@ -611,57 +598,35 @@ def seasonals_chart(tick):
 
 	fig2.update_xaxes(showgrid=False)
 	fig2.update_yaxes(showgrid=False)
-	def color_cells(val, col_name):
-		if col_name == 'ATR_percentile_rank':
-			if val < 10:
-			    return "green"
-			elif val > 90:
-			    return "red"
-			else:
-			    return "white"
-		elif col_name == 'ATR_from_MA':
-			if val > 9:  # or any other threshold you want to set
-			    return "red"
-			else:
-			    return "white"
-		elif col_name in ['Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']:
-			if val == 'Above' or val == 'Positive':
-			    return "green"
-			else:
-			    return "red"
-		else:
-			return "white"
 
-	df = df.iloc[::-1]
-	df['Date'] = df['Date'].dt.date
-	cols_of_interest = ['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope']
-	color_list = df[cols_of_interest].apply(lambda x: [color_cells(v, x.name) for v in x])
+	fig3 = go.Figure()
+	# Create table trace
 
-	# apply color_cells function to each element in dataframe df for the columns of interest
-	color_list = color_list.T.values.tolist()
+	trace = go.Table(
+	    header=dict(values=list(summary.columns),
+	                fill_color='black',
+	                align='left',
+		        font=dict(color='white')),
+	    cells=dict(values=[summary["f5"], summary["f10"], summary["f21"], summary["Years"]],
+	               fill_color='black',
+	               align='left',
+		       font=dict(color='white')))
+	
+	# Add trace to the figure
+	fig3.add_trace(trace)
 
-	fig3 = go.Figure(data=[go.Table(
-	    columnwidth = [1.25, 2, 2, 2, 2, 2, 2],
-	    header=dict(
-		values=['Date', 'ATR_from_MA', 'ATR_percentile_rank', 'Above_200_MA', 'Above_200_WMA', '200_MA_slope', '965_MA_slope'],
-		fill_color='paleturquoise',
-		align='left',
-		font=dict(color='black')
-	    ),
-	    cells=dict(
-		values=[
-		    df[col].tolist() if col == 'Date' else ['{:.1f}'.format(val) if isinstance(val, float) else val for val in df[col]] 
-		    for col in cols_of_interest
-		],
-		fill_color=color_list,  # Use color_list here
-		align='left',
-		font=dict(color='black')
-	    )
-	)])
+	
 	st.plotly_chart(fig)
-
 	st.plotly_chart(fig2)
 	st.plotly_chart(fig3)
-
+	# Printing the statistics
+	st.markdown(f'''
+	Means...5d {summary["f5"].mean().round(2)},10d {summary["f10"].mean().round(2)},21d {summary["f21"].mean().round(2)}\n\n
+	Medians...5d {summary["f5"].median().round(2)},10d {summary["f10"].median().round(2)},21d {summary["f21"].median().round(2)}\n\n
+	Percent+...5d {round(percent_pos_5*100,1)}% 10d {round(percent_pos_10*100,1)}% 21d {round(percent_pos_21*100,1)}%\n\n
+	''')
 if st.button('Plot'):
-	seasonals_chart(stock)
+	try:
+		seasonals_chart(stock)
+	except:
+		st.error('Error retrieving data. Please check the ticker and try again.')
