@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import daily_signals, indicies, positions, single_names, currency_pairs, commodities, user_input, variance_sim
+from pages import daily_signals, indicies, positions, single_names, currency_pairs, commodities, user_input, variance_sim, trade_sizing
 
 st.set_page_config(page_title="Multi-Page Dashboard", page_icon=":chart_with_upwards_trend:")
 
@@ -35,6 +35,10 @@ def variance_sim_page():
     st.sidebar.markdown("# Variance Simulation")
     variance_sim.variance_sim_app()
 
+def trade_sizing_page():
+    st.sidebar.markdown("# Trade Sizing")
+    trade_sizing.trade_sizing_app()
+
 page_names_to_funcs = {
     "Daily Signals": daily_signals_page,
     "Indices": indicies_page,
@@ -44,6 +48,7 @@ page_names_to_funcs = {
     "Commodities": commodities_page,
     "User Input": user_input_page,
     "Variance Simulation": variance_sim_page,
+    "Trade Sizing": trade_sizing_page,
 }
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
