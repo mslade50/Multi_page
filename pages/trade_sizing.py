@@ -12,12 +12,13 @@ def calculate_trade_size(account_size, risk_allocation, entry_level, stop_level,
     if target_currency != base_currency:
         forex_ticker = f"{base_currency}{target_currency}=X"
         forex_data = yf.download(forex_ticker, period="1d")['Close'].iloc[0]
-        if not pd.isnull(forex_data):
-            exchange_rate = forex_data
-            risk_per_trade = risk_per_trade / exchange_rate
-        else:
+        
+        if pd.isnull(forex_data):
             st.error(f"Could not get exchange rate for {forex_ticker}. Please check the ticker and try again.")
             return
+        else:
+            exchange_rate = forex_data
+            risk_per_trade = risk_per_trade / exchange_rate
 
     trade_size = risk_per_trade / risk_per_unit
     return int(trade_size)
