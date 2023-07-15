@@ -34,6 +34,7 @@ def trade_sizing_app():
     risk_allocation = st.number_input("Target Risk as % of Account", min_value=0.01, max_value=10.0, value=1.0, step=0.01)
     stop_loss_override = st.text_input("Stop Loss Override", value="")
     asset_class = st.selectbox("Asset Class", ['Stocks', 'Options', 'Futures', 'Forex'])
+    direction = st.selectbox("Direction of Trade", ['Long', 'Short'])
 
     if ticker and st.button("Calculate Trade Size"):
         data = yf.download(ticker, period="1mo")  # Downloading last 30 days of data
@@ -42,7 +43,10 @@ def trade_sizing_app():
         if stop_loss_override:
             stop_level = float(stop_loss_override)
         else:
-            stop_level = entry_level - 2 * atr if asset_class != 'Forex' else entry_level - 0.02 * atr  # Adjust ATR multiplier for Forex
+            if direction == 'Long':
+                stop_level = entry_level - 2 * atr
+            else:
+                stop_level = entry_level + 2 * atr
 
         trade_size = calculate_trade_size(account_size, risk_allocation, entry_level, stop_level, ticker, asset_class)
 
@@ -52,4 +56,5 @@ def trade_sizing_app():
         st.write(f"$ Risk: {trade_size * risk_per_unit}")
 
 trade_sizing_app()
+
 
