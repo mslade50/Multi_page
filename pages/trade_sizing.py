@@ -36,7 +36,7 @@ def trade_sizing_app():
     asset_class = st.selectbox("Asset Class", ['Stocks', 'Options', 'Futures', 'Forex'])
 
     if ticker and st.button("Calculate Trade Size"):
-        data = yf.download(ticker, period="1d")
+        data = yf.download(ticker, period="1mo")  # Downloading last 30 days of data
         atr = ta.volatility.average_true_range(data['High'], data['Low'], data['Close'], window=14, fillna=False).iloc[-1]
 
         if stop_loss_override:
