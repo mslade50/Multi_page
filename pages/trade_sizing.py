@@ -4,6 +4,7 @@ from ta.volatility import AverageTrueRange
 
 # Function to calculate number of shares to buy
 # Function to calculate number of shares to buy
+# Function to calculate number of shares to buy
 def calculate_trade_size(account_size, risk_allocation, entry_level, stop_level, base_currency, target_currency):
     risk_per_trade = account_size * risk_allocation / 100  # Converting percentage risk allocation to absolute value
     risk_per_unit = abs(entry_level - stop_level)
@@ -11,17 +12,18 @@ def calculate_trade_size(account_size, risk_allocation, entry_level, stop_level,
     # Convert risk_per_trade to target currency if necessary
     if target_currency != base_currency:
         forex_ticker = f"{base_currency}{target_currency}=X"
-        forex_data = yf.download(forex_ticker, period="1d")['Close'].iloc[0]
+        forex_data = yf.download(forex_ticker, period="1d")
         
-        if pd.isnull(forex_data):
+        if forex_data.empty or pd.isnull(forex_data['Close'].iloc[0]):
             st.error(f"Could not get exchange rate for {forex_ticker}. Please check the ticker and try again.")
             return
         else:
-            exchange_rate = forex_data
+            exchange_rate = forex_data['Close'].iloc[0]
             risk_per_trade = risk_per_trade / exchange_rate
 
     trade_size = risk_per_trade / risk_per_unit
     return int(trade_size)
+
 
 # Function to calculate ATR-based stop-loss
 def calculate_atr_stop_level(ticker, entry_level, atr_multiplier=2):
