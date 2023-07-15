@@ -14,13 +14,13 @@ def calculate_trade_size(account_size, risk_allocation, entry_level, stop_level,
         if target_currency != 'USD':
             forex_ticker = f"USD{target_currency}=X"
             forex_data = yf.download(forex_ticker, period="1d")['Close'].iloc[0]
-            risk_per_trade = risk_per_trade / forex_data
+            risk_per_trade = risk_per_trade * forex_data
 
         # We also need to check if the first three letters of the entered currency are USD. If they are also not USD then we need to do the exact same thing we did with the last 3 letters
         if base_currency != 'USD':
             forex_ticker = f"USD{base_currency}=X"
             forex_data = yf.download(forex_ticker, period="1d")['Close'].iloc[0]
-            risk_per_trade = risk_per_trade / forex_data
+            risk_per_trade = risk_per_trade * forex_data
 
     trade_size = risk_per_trade / risk_per_unit
     return int(trade_size)
