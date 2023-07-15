@@ -65,6 +65,4 @@ def trade_sizing_app():
 
 trade_sizing_app()
 
-trade_sizing_app()
-
 
