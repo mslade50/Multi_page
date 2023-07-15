@@ -30,8 +30,8 @@ def trade_sizing_app():
 
     ticker = st.text_input("Enter the Ticker")
     entry_level = st.number_input("Enter the Entry Level", min_value=0.0, value=100.0, step=0.01)
-    account_size = st.number_input("Enter the Account Size", min_value=0.0, value=100000.0, step=0.01)
-    risk_allocation = st.number_input("Target Risk as % of Account", min_value=0.01, max_value=10.0, value=1.0, step=0.01)
+    account_size = st.number_input("Enter the Account Size", min_value=0.0, value=70000.0, step=0.01)
+    risk_allocation = st.number_input("Target Risk as % of Account", min_value=0.01, max_value=10.0, value=0.5, step=0.01)
     stop_loss_override = st.text_input("Stop Loss Override", value="")
     asset_class = st.selectbox("Asset Class", ['Stocks', 'Options', 'Futures', 'Forex'])
     direction = st.selectbox("Direction of Trade", ['Long', 'Short'])
