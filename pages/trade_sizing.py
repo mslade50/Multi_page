@@ -3,6 +3,7 @@ import yfinance as yf
 from ta.volatility import AverageTrueRange
 
 # Function to calculate number of shares to buy
+# Function to calculate number of shares to buy
 def calculate_trade_size(account_size, risk_allocation, entry_level, stop_level, base_currency, target_currency):
     risk_per_trade = account_size * risk_allocation / 100  # Converting percentage risk allocation to absolute value
     risk_per_unit = abs(entry_level - stop_level)
@@ -10,8 +11,13 @@ def calculate_trade_size(account_size, risk_allocation, entry_level, stop_level,
     # Convert risk_per_trade to target currency if necessary
     if target_currency != base_currency:
         forex_ticker = f"{base_currency}{target_currency}=X"
-        exchange_rate = yf.Ticker(forex_ticker).info['regularMarketPrice']
-        risk_per_trade = risk_per_trade / exchange_rate
+        forex_data = yf.download(forex_ticker, period="1d")['Close'].iloc[0]
+        if not pd.isnull(forex_data):
+            exchange_rate = forex_data
+            risk_per_trade = risk_per_trade / exchange_rate
+        else:
+            st.error(f"Could not get exchange rate for {forex_ticker}. Please check the ticker and try again.")
+            return
 
     trade_size = risk_per_trade / risk_per_unit
     return int(trade_size)
