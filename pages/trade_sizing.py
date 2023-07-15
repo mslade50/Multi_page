@@ -48,6 +48,7 @@ def trade_sizing_app():
             else:
                 stop_level = entry_level + 2 * atr
 
+        risk_per_unit = abs(entry_level - stop_level)
         trade_size = calculate_trade_size(account_size, risk_allocation, entry_level, stop_level, ticker, asset_class)
 
         st.write(f"Shares: {trade_size}")
