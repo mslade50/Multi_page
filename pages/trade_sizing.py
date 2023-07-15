@@ -51,10 +51,19 @@ def trade_sizing_app():
         risk_per_unit = abs(entry_level - stop_level)
         trade_size = calculate_trade_size(account_size, risk_allocation, entry_level, stop_level, ticker, asset_class)
 
+        if asset_class in ["Stocks", "Options"]:
+            stop_level = round(stop_level, 2)
+        else:
+            stop_level = round(stop_level, 4)
+
+        risk_value = round(trade_size * risk_per_unit, 0)
+
         st.write(f"Shares: {trade_size}")
         st.write(f"Entry: {entry_level}")
         st.write(f"Stop Level: {stop_level}")
-        st.write(f"$ Risk: {trade_size * risk_per_unit}")
+        st.write(f"$ Risk: {risk_value}")
+
+trade_sizing_app()
 
 trade_sizing_app()
 
