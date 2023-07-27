@@ -594,7 +594,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    z=merged_df['Forward_5d_pct_rank'], 
 	    colorscale=seismic,
 	    reversescale=True,
-	    colorbar=dict(len=0.3, y=0.82, tickfont=dict(color='black')),
+	    colorbar=dict(len=0.36, y=0.82, tickfont=dict(color='black')),
 	    zsmooth='best',
 	    zmin=-max_5d, 
 	    zmax=max_5d),
@@ -619,7 +619,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    z=merged_df['Forward_5d_pct_rank'], 
 	    colorscale=seismic,
 	    reversescale=True,
-	    colorbar=dict(len=0.3, y=0.28, tickfont=dict(color='black')),
+	    colorbar=dict(len=0.36, y=0.28, tickfont=dict(color='black')),
 	    zsmooth='best',
 	    zmin=-max_5d, 
 	    zmax=max_5d),
@@ -633,11 +633,9 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	# Update y-axis labels
 	fig.update_yaxes(title_text="Trailing 21d Rank",title_font_color="black", row=1, col=1)
 	fig.update_yaxes(title_text="Trailing 5d Rank",title_font_color="black", row=2, col=1)
-	fig.update_xaxes(title_text="Seasonal Rank", row=1, col=1, tickfont=dict(color='black'))
 	fig.update_yaxes(row=1, col=1, tickfont=dict(color='black'))
 	
 	# For the second heatmap
-	fig.update_xaxes(title_text="Seasonal Rank", row=1, col=2, tickfont=dict(color='black'))
 	fig.update_yaxes(row=1, col=2, tickfont=dict(color='black'))
 	
 	# For the third heatmap
