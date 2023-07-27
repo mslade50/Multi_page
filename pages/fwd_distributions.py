@@ -581,10 +581,12 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    z=merged_df['Forward_21d_pct_rank'], 
 	    colorscale=seismic,
 	    reversescale=True,
+	    showscale=False,  # Disable the colorbar
 	    zsmooth='best',
 	    zmin=-max_21d, 
 	    zmax=max_21d),
-	    row=1, col=1)
+	    row=1, col=1
+	)
 
 	fig.add_trace(go.Heatmap(
 	    x=merged_df['Average_rnk'], 
@@ -604,10 +606,12 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    z=merged_df['Forward_21d_pct_rank'], 
 	    colorscale=seismic,
 	    reversescale=True,
+	    showscale=False,  # Disable the colorbar
 	    zsmooth='best',
 	    zmin=-max_21d, 
 	    zmax=max_21d),
-	    row=2, col=1)
+	    row=2, col=1
+	)
 
 	fig.add_trace(go.Heatmap(
 	    x=merged_df['Average_rnk'], 
@@ -828,13 +832,13 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 
 	# Add KDE line to secondary y-axis
 	fig2.add_trace(
-	    go.Scatter(x=kde_x, y=kde_y, mode='lines', line=dict(width=2, color='black'), name='Seasonal Implied Dist.'),
+	    go.Scatter(x=kde_x, y=kde_y, mode='lines', line=dict(width=2, color='white'), name='Seasonal Implied Dist.'),
 	    secondary_y=True
 	)
 
 	fig2.add_vline(x=mean_forward_21d_price, line_color="green")
 	fig2.add_vline(x=median_forward_21d_price, line_color="blue")
-	fig2.add_vline(x=last_close, line_color="black")
+	fig2.add_vline(x=last_close, line_color="white")
 	# Add annotations at the left edge
 	annotations_y = [0.95, 0.90]  # positions to stack the annotations
 	texts = [
@@ -1065,7 +1069,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	)
 
 	# Add the KDE to fig5
-	fig5.add_trace(go.Scatter(x=kde_x_5d, y=kde_y_5d, mode='lines', name='Seasonal Implied Dist.', yaxis='y2', line=dict(color='black')))
+	fig5.add_trace(go.Scatter(x=kde_x_5d, y=kde_y_5d, mode='lines', name='Seasonal Implied Dist.', yaxis='y2', line=dict(color='white')))
 
 	# Assuming you have already extracted the PDF trace from fig9
 	fig5.add_trace(pdf_trace_5d.update(yaxis='y2'))  
@@ -1073,7 +1077,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	# Add vertical lines for mean, median, and last close
 	fig5.add_vline(x=mean_forward_5d_price, line_color="green")
 	fig5.add_vline(x=median_forward_5d_price, line_color="blue")
-	fig5.add_vline(x=last_close, line_color="black")
+	fig5.add_vline(x=last_close, line_color="white")
 
 	# Add annotations at the left edge
 	annotations_y_5d = [0.95, 0.90]  # positions to stack the annotations
