@@ -644,33 +644,29 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig.update_layout(
 	    title_text=f"Heatmaps for {ticker}",
 	    title_font_color="black",
-	    shapes=shapes,
 	    plot_bgcolor='white',
 	    paper_bgcolor='white',
 	    width=800,  # This is a typical width, but you may adjust as needed
 	    height=600,  # Adjust based on your preferred height
-	    xaxis=dict(
-	        titlefont=dict(
-	            color="black"
-	        ),
-	        tickfont=dict(
-	            color="black"
-	        )
-	    ),
-	    yaxis=dict(
-	        titlefont=dict(
-	            color="black"
-	        ),
-	        tickfont=dict(
-	            color="black"
-	        )
-	    ),
 	    legend=dict(
 	        font=dict(
 	            color="black"
 	        )
 	    )
 	)
+	
+	# Set font colors for all subplots' x-axes and y-axes
+	for axis in ['xaxis', 'xaxis2', 'yaxis', 'yaxis2']:
+	    fig.update_layout({
+	        axis: dict(
+	            titlefont=dict(
+	                color="black"
+	            ),
+	            tickfont=dict(
+	                color="black"
+	            )
+	        )
+	    })
 
 	def compute_distance(row, target_values, avg_rank_weight=2.5):
 	    return np.sqrt(
