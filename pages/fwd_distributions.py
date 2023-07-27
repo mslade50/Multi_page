@@ -842,14 +842,13 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	# Add annotations at the left edge
 	annotations_y = [0.95, 0.90]  # positions to stack the annotations
 	annotations_y.extend([0.85])  # Add another position for the new annotation
-	texts.extend([f"Last Close = {last_close:.2f}"])
-	colors.extend(["white"])
 	texts = [
 	    f"Mean = {mean_forward_21d_price:.2f}",
 	    f"Median = {median_forward_21d_price:.2f}"
 	]
 	colors = ["green", "blue"]
-
+	texts.extend([f"Last Close = {last_close:.2f}"])
+	colors.extend(["white"])
 	# Add annotations
 	for i, (y, text, color) in enumerate(zip(annotations_y, texts, colors)):
 	    fig2.add_annotation(
@@ -1151,7 +1150,7 @@ ticker = st.text_input("Enter Ticker:")
 tgt_date_range = st.number_input("Enter Target Holding Period in Days:")
 end_date_default = dt.date.today() + dt.timedelta(days=1)
 end_date = st.date_input("Enter End Date:", value=end_date_default)
-sigma = st.number_input("Enter Sigma:", value=1.0)  # Example default value of 1.0, adjust as needed
+sigma = st.number_input("Enter Implied Vol:", value=0.25)  # Example default value of 1.0, adjust as needed
 days = st.number_input("Enter Days:", value=21, format="%i")  # Example default value of 21, adjust as needed
 
 # Call the function with the user input
