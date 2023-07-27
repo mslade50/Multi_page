@@ -39,6 +39,10 @@ def trade_sizing_page():
     st.sidebar.markdown("# Trade Sizing")
     trade_sizing.trade_sizing_app()
 
+def fwd_distributions_page():
+    st.sidebar.markdown("# Forward Distributions")
+    fwd_distributions.fwd_distributions_app()
+
 page_names_to_funcs = {
     "Daily Signals": daily_signals_page,
     "Indices": indicies_page,
@@ -49,6 +53,7 @@ page_names_to_funcs = {
     "User Input": user_input_page,
     "Variance Simulation": variance_sim_page,
     "Trade Sizing": trade_sizing_page,
+    "Forward Distributions": fwd_distributions_page  # added this line
 }
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
