@@ -1101,7 +1101,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	        showarrow=False,
 	        font=dict(color=color, size=12)
 	    )
-
+	fig5.update_layout(title_text=f'Forward 5 Day Distribution for {ticker}')
 	fig5.update_layout(
 	    yaxis2=dict(title='Density', overlaying='y', side='right'),
 	    annotations=dict(xanchor='left', xshift=10)
