@@ -1104,14 +1104,14 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 
 	# fig7.show()
 
-	fig.show() #traditional 5 and 21d heatmap
-	fig2.show() #Fwd 21 histogram
+	st.plotly_chart(fig) #traditional 5 and 21d heatmap
+	st.plotly_chart(fig2) #Fwd 21 histogram
 	# # fig6.show() #naive implied distribution 21d
 	# fig3.show() #trailing 252 and 63d heatmap
 	# # fig4.show() #random sample of 21 returns histogram
-	fig5.show() #fwd 5 histogram
-	print(f"Average Forward Vol Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_vol_change} | Average Percentile rank: {final_avg_percentile_forward_vol}%")
-	print(f"Average Forward % Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_pct} | Average Percentile rank: {final_avg_percentile_forward_pct}%")
+	st.plotly_chart(fig5) #fwd 5 histogram
+	st.write(f"Average Forward Vol Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_vol_change} | Average Percentile rank: {final_avg_percentile_forward_vol}%")
+	st.write(f"Average Forward % Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_pct} | Average Percentile rank: {final_avg_percentile_forward_pct}%")
 
 # fig_creation('XLK', 12, (dt.date.today() + dt.timedelta(days=1)).strftime('%Y-%m-%d'), .173, 21) 
 # fig_creation('HD', 12, "2010-04-23", .293, 21)
