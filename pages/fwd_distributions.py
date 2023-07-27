@@ -1123,7 +1123,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 
 # Calculate KDE for Forward_5d_price using your provided method
 ticker = st.text_input("Enter Ticker:")
-tgt_date_range = st.date_input("Enter Target Date Range:")
+tgt_date_range = st.number_input("Enter Target Holding Period in Days:")
 end_date_default = datetime.date.today() + datetime.timedelta(days=1)
 end_date = st.date_input("Enter End Date:", value=end_date_default)
 sigma = st.number_input("Enter Sigma:", value=1.0)  # Example default value of 1.0, adjust as needed
