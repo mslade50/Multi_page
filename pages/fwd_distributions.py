@@ -415,7 +415,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	start_year += 4
 
 	# Define the current year
-	end_date_dt = dt.datetime.strptime(end_date, '%Y-%m-%d')
+	end_date_dt = end_date
 	current_year = end_date_dt.year
 	last_close=data['Close'][-1]
 	def mdm(ticker, years=list(range(start_year, current_year-3))):	 
