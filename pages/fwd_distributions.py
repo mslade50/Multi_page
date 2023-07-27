@@ -581,7 +581,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    z=merged_df['Forward_21d_pct_rank'], 
 	    colorscale=seismic,
 	    reversescale=True,
-	    colorbar=dict(len=0.36, x=0.47,y=0.82),
 	    zsmooth='best',
 	    zmin=-max_21d, 
 	    zmax=max_21d),
@@ -605,7 +604,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    z=merged_df['Forward_21d_pct_rank'], 
 	    colorscale=seismic,
 	    reversescale=True,
-	    colorbar=dict(len=0.36, x=0.47,y=0.28),
 	    zsmooth='best',
 	    zmin=-max_21d, 
 	    zmax=max_21d),
@@ -624,12 +622,13 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    row=2, col=2)
 
 	# Update x-axis titles
-	fig.update_xaxes(title_text="Seasonal Rank", row=2, col=1)
-	fig.update_xaxes(title_text="Seasonal Rank", row=2, col=2)
+	fig.update_xaxes(title_text="Seasonal Rank", title_font_color="black", row=2, col=1)
+	fig.update_xaxes(title_text="Seasonal Rank", title_font_color="black", row=2, col=2)
+
 
 	# Update y-axis labels
-	fig.update_yaxes(title_text="Trailing 21d Rank", row=1, col=1)
-	fig.update_yaxes(title_text="Trailing 5d Rank", row=2, col=1)
+	fig.update_yaxes(title_text="Trailing 21d Rank",title_font_color="black", row=1, col=1)
+	fig.update_yaxes(title_text="Trailing 5d Rank",title_font_color="black", row=2, col=1)
 	
 	# Adding lines to each subplot
 	fig.add_hline(y=today_21d_rank, line_width=3, line_color="black", row=1, col=1)
