@@ -841,6 +841,9 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig2.add_vline(x=last_close, line_color="white")
 	# Add annotations at the left edge
 	annotations_y = [0.95, 0.90]  # positions to stack the annotations
+	annotations_y.extend([0.85])  # Add another position for the new annotation
+	texts.extend([f"Last Close = {last_close:.2f}"])
+	colors.extend(["white"])
 	texts = [
 	    f"Mean = {mean_forward_21d_price:.2f}",
 	    f"Median = {median_forward_21d_price:.2f}"
