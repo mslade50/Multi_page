@@ -832,7 +832,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 
 	# Add KDE line to secondary y-axis
 	fig2.add_trace(
-	    go.Scatter(x=kde_x, y=kde_y, mode='lines', line=dict(width=2, color='white'), name='Seasonal Implied Dist.'),
+	    go.Scatter(x=kde_x, y=kde_y, mode='lines', line=dict(width=2, color='goldenrod'), name='Seasonal Implied Dist.'),
 	    secondary_y=True
 	)
 
@@ -1071,7 +1071,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	)
 
 	# Add the KDE to fig5
-	fig5.add_trace(go.Scatter(x=kde_x_5d, y=kde_y_5d, mode='lines', name='Seasonal Implied Dist.', yaxis='y2', line=dict(color='white')))
+	fig5.add_trace(go.Scatter(x=kde_x_5d, y=kde_y_5d, mode='lines', name='Seasonal Implied Dist.', yaxis='y2', line=dict(color='gold')))
 
 	# Assuming you have already extracted the PDF trace from fig9
 	fig5.add_trace(pdf_trace_5d.update(yaxis='y2'))  
@@ -1088,7 +1088,9 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    f"Median = {median_forward_5d_price:.2f}"
 	]
 	colors = ["green", "blue"]
-
+	annotations_y_5d.extend([0.85])  # Add another position for the new annotation
+	texts_5d.extend([f"Last Close = {last_close:.2f}"])
+	colors.extend(["white"])
 	for i, (y, text, color) in enumerate(zip(annotations_y_5d, texts_5d, colors)):
 	    fig5.add_annotation(
 	        xref="paper",
