@@ -435,7 +435,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 		df_final = pd.concat(dfs)
 	    
 		# Load your CSV file
-		trading_dates_df = pd.read_csv('trading_days.csv')
+		csv_url = "https://raw.githubusercontent.com/mslade50/Multi_page/main/trading_days.csv"
+		trading_dates_df = pd.read_csv(csv_url)
 
 		# Convert 'Date' column to datetime and extract year
 		trading_dates_df['Date'] = pd.to_datetime(trading_dates_df['Date'])
@@ -503,11 +504,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	# Perform the merge
 	merged_df = pd.merge(df, data_subset, left_index=True, right_index=True)
 	# filepath=r"C:\Users\McKinley\Dropbox\MS Docs\Work\Sublime_Misc\52whigh.py"
-	filepath=r"C:\Users\mckin\Dropbox\MS Docs\Work\Sublime_Misc\52whigh.py"
-	newFile=os.path.dirname(filepath)+"/Single_stock_mdm.xlsx"
-	writer=ExcelWriter(newFile)
-	merged_df.to_excel(writer,'Trend Context')  
-	writer.close()
+
 
 	def matplotlib_to_plotly(cmap, pl_entries):
 	    h = 1.0/(pl_entries-1)
@@ -670,10 +667,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 
 	# Calculate the distance for each row and sort the dataframe by these distances
 	filtered_df['distance'] = filtered_df.apply(lambda row: compute_distance(row, current_values), axis=1)
-	filtered_df.to_csv("filtered_df.csv", index=True)
 	closest_rows = filtered_df.nsmallest(50, 'distance').round(2)
-	closest_rows.to_csv("closest_rows.csv", index=True)
-	print(closest_rows)
+
 
 	# Compute the mean and median of Forward_21d_pct_rank from the 50 closest rows
 
