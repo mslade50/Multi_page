@@ -645,7 +645,14 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig.add_hline(y=today_5d_rank, line_width=3, line_color="black", row=2, col=2)
 	fig.add_vline(x=today_avg_rank, line_width=3, line_color="black", row=2, col=2)
 
-	fig.update_layout(title_text=f"Heatmaps for {ticker}", shapes=shapes)
+	fig.update_layout(
+	    title_text=f"Heatmaps for {ticker}",
+	    shapes=shapes,
+	    plot_bgcolor='white',
+	    paper_bgcolor='white',
+	    width=800,  # This is a typical width, but you may adjust as needed
+	    height=600   # Adjust based on your preferred height
+	)
 
 
 	def compute_distance(row, target_values, avg_rank_weight=2.5):
