@@ -640,6 +640,22 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig.add_vline(x=today_avg_rank, line_width=3, line_color="black", row=2, col=1)
 	fig.add_hline(y=today_5d_rank, line_width=3, line_color="black", row=2, col=2)
 	fig.add_vline(x=today_avg_rank, line_width=3, line_color="black", row=2, col=2)
+	subplot_titles = ("Forward_21d_pct_rank", "Forward_5d_pct_rank", "Forward_21d_pct_rank", "Forward_5d_pct_rank")
+	for i, title in enumerate(subplot_titles, 1):
+	    fig.layout.annotations[i-1].update(font=dict(color="black"))
+	# Set font colors for all subplots' x-axes and y-axes
+	for axis in ['xaxis', 'xaxis2', 'yaxis', 'yaxis2']:
+	    fig.update_layout({
+	        axis: dict(
+	            titlefont=dict(
+	                color="black"
+	            ),
+	            tickfont=dict(
+	                color="black"
+	            )
+	        )
+	    })
+
 
 	fig.update_layout(
 	    title_text=f"Heatmaps for {ticker}",
@@ -655,19 +671,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    )
 	)
 	
-	# Set font colors for all subplots' x-axes and y-axes
-	for axis in ['xaxis', 'xaxis2', 'yaxis', 'yaxis2']:
-	    fig.update_layout({
-	        axis: dict(
-	            titlefont=dict(
-	                color="black"
-	            ),
-	            tickfont=dict(
-	                color="black"
-	            )
-	        )
-	    })
-
+	
 	def compute_distance(row, target_values, avg_rank_weight=2.5):
 	    return np.sqrt(
 	        avg_rank_weight * (row['Average_rnk'] - target_values[0])**2 +  # Increased importance
