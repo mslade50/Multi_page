@@ -836,8 +836,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig2.add_trace(
 	    go.Histogram(
 	        x=closest_rows['Forward_21d_price'],
-	        nbinsx=40,
-	        name='Histogram'
+	        nbinsx=40
 	    )
 	)
 	fig2.add_trace(kde_trace, secondary_y=True)
@@ -1213,21 +1212,20 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig10.add_trace(
 	    go.Histogram(
 	        x=closest_rows['Forward_63d_price'],  # Changed 21d to 63d
-	        nbinsx=40,
-	        name='Histogram'
+	        nbinsx=40
 	    )
 	)
 	fig10.add_trace(kde_trace, secondary_y=True)
 
 	# Add KDE line to secondary y-axis
 	fig10.add_trace(
-	    go.Scatter(x=kde_x, y=kde_y, mode='lines', line=dict(width=2, color='black'), name='Seasonal Implied Dist.'),
+	    go.Scatter(x=kde_x, y=kde_y, mode='lines', line=dict(width=2, color='goldenrod'), name='Seasonal Implied Dist.'),
 	    secondary_y=True
 	)
 
 	fig10.add_vline(x=mean_forward_63d_price, line_color="green")  # Changed 21d to 63d
 	fig10.add_vline(x=median_forward_63d_price, line_color="blue")  # Changed 21d to 63d
-	fig10.add_vline(x=last_close, line_color="black")
+	fig10.add_vline(x=last_close, line_color="white")
 
 	# Add annotations at the left edge
 	annotations_y = [0.95, 0.90]  # positions to stack the annotations
