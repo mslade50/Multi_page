@@ -1146,13 +1146,119 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	)
 
 	# fig7.show()
+	S = last_close  # Current stock price
+	sigma = sigma  # Annualized implied volatility
+	T_days = 63  # Time to expiration in days, changed to 63 days
+	r = 0.03  # Risk-free rate
 
+	# Convert days to years
+	T = T_days / 252.0
+
+	# Calculate the parameters for the distribution of the logarithm of the stock price
+	mu = np.log(S) + (r - 0.5 * sigma**2) * T
+	sigma_adjusted = sigma * np.sqrt(T)
+
+	# Calculate the x-axis range based on ±4 standard deviations
+	x_min = np.exp(mu - 4*sigma_adjusted)
+	x_max = np.exp(mu + 4*sigma_adjusted)
+
+	# Generate data points for the stock price and the associated PDF
+	stock_prices = np.linspace(x_min, x_max, 400)
+	pdf_values = norm.pdf(np.log(stock_prices), mu, sigma_adjusted) / stock_prices
+
+	# Sample 50 random outcomes based on the log-normal distribution
+	random_outcomes = np.random.lognormal(mean=mu, sigma=sigma_adjusted, size=50)
+
+	# Plot
+	fig9 = go.Figure()  # Changed from fig6 to fig9
+
+	# Add the PDF line (y-axis on the left)
+	fig9.add_trace(go.Scatter(x=stock_prices, y=pdf_values, mode='lines', name='Probability Density'))
+
+	# Add histogram (y-axis on the right)
+	fig9.add_trace(go.Histogram(x=random_outcomes, yaxis='y2', name='Sample Outcomes', opacity=0.7, nbinsx=40))
+
+	# Update layout to include a secondary y-axis and adjust x-axis range
+	fig9.update_layout(title='Naive Implied Probability Distribution & Sample Outcomes',
+	                  xaxis_title='Stock Price',
+	                  yaxis_title='Naive Distribution',
+	                  yaxis2=dict(title='Sample Count', overlaying='y', side='right'),
+	                  xaxis=dict(tickformat='$,.2f', range=[x_min, x_max]))
+
+	closest_rows['Forward_63d_pct_proportion'] = closest_rows['Forward_63d_pct_rank'] / 100  # Changed 21d to 63d
+
+	# Calculate the forward 63-day prices from the percentage returns
+	closest_rows['Forward_63d_price'] = last_close * (1 + closest_rows['Forward_63d_pct_proportion'])  # Changed 21d to 63d
+
+	mean_forward_63d_price = last_close * (1 + mean_forward_63d_closest / 100)  # Changed 21d to 63d
+	median_forward_63d_price = last_close * (1 + median_forward_63d_closest / 100)  # Changed 21d to 63d
+
+	# 1. Limiting the x-axis to 4 standard deviations
+	mean_price = closest_rows['Forward_63d_price'].mean()  # Changed 21d to 63d
+	std_price = closest_rows['Forward_63d_price'].std()  # Changed 21d to 63d
+
+	x_range = [mean_price - 4 * std_price, mean_price + 4 * std_price]
+
+	# 2. Calculate KDE
+	kde_x = np.linspace(x_range[0], x_range[1], 400)
+	kde_y = stats.gaussian_kde(closest_rows['Forward_63d_price'].values)(kde_x)  # Changed 21d to 63d
+	kde_trace = fig9.data[0]  # Refers to fig9 instead of fig6
+	kde_trace.name = "Market Implied Distribution"
+	kde_trace.line.color = 'gray'
+
+	# Create subplots and specify secondary y-axis for KDE
+	fig10 = make_subplots(specs=[[{"secondary_y": True}]])  # Changed from fig2 to fig10
+
+	# Add histogram
+	fig10.add_trace(
+	    go.Histogram(
+	        x=closest_rows['Forward_63d_price'],  # Changed 21d to 63d
+	        nbinsx=40,
+	        name='Histogram'
+	    )
+	)
+	fig10.add_trace(kde_trace, secondary_y=True)
+
+	# Add KDE line to secondary y-axis
+	fig10.add_trace(
+	    go.Scatter(x=kde_x, y=kde_y, mode='lines', line=dict(width=2, color='black'), name='Seasonal Implied Dist.'),
+	    secondary_y=True
+	)
+
+	fig10.add_vline(x=mean_forward_63d_price, line_color="green")  # Changed 21d to 63d
+	fig10.add_vline(x=median_forward_63d_price, line_color="blue")  # Changed 21d to 63d
+	fig10.add_vline(x=last_close, line_color="black")
+
+	# Add annotations at the left edge
+	annotations_y = [0.95, 0.90]  # positions to stack the annotations
+	texts = [
+	    f"Mean = {mean_forward_63d_price:.2f}",  # Changed 21d to 63d
+	    f"Median = {median_forward_63d_price:.2f}"  # Changed 21d to 63d
+	]
+	colors = ["green", "blue"]
+
+	# Add annotations
+	for i, (y, text, color) in enumerate(zip(annotations_y, texts, colors)):
+	    fig10.add_annotation(
+	        xref="paper",
+	        yref="paper",
+	        x=0,
+	        y=y,
+	        text=text,
+	        showarrow=False,
+	        font=dict(color=color, size=12)
+	    )
+
+	fig10.update_layout(annotations=dict(xanchor='left', xshift=10), title=f'Forward 63 Day Distribution for {ticker}')  # Changed 21d to 63d
+	fig10.update_xaxes(range=x_range)  # limit x-axis to ±4 standard deviations
 	st.plotly_chart(fig) #traditional 5 and 21d heatmap
+	st.plotly_chart(fig5) #fwd 5 histogram
 	st.plotly_chart(fig2) #Fwd 21 histogram
+	st.plotly_chart(fig10) #Fwd 63 histogram
 	# # fig6.show() #naive implied distribution 21d
 	# fig3.show() #trailing 252 and 63d heatmap
 	# # fig4.show() #random sample of 21 returns histogram
-	st.plotly_chart(fig5) #fwd 5 histogram
+	
 	st.write(f"Average Forward Vol Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_vol_change} | Average Percentile rank: {final_avg_percentile_forward_vol}%")
 	st.write(f"Average Forward % Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_pct} | Average Percentile rank: {final_avg_percentile_forward_pct}%")
 
