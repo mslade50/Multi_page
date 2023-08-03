@@ -836,7 +836,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig2.add_trace(
 	    go.Histogram(
 	        x=closest_rows['Forward_21d_price'],
-	        nbinsx=40
+	        nbinsx=40,
+		showlegend=False
 	    )
 	)
 	fig2.add_trace(kde_trace, secondary_y=True)
@@ -1114,7 +1115,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    )
 	fig5.update_layout(title_text=f'Forward 5 Day Distribution for {ticker}')
 	fig5.update_layout(
-	    yaxis2=dict(title='Density', overlaying='y', side='right'),
+	    yaxis2=dict(title=None, overlaying='y', side='right'),
 	    annotations=dict(xanchor='left', xshift=10)
 	)
 
@@ -1169,16 +1170,16 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	random_outcomes = np.random.lognormal(mean=mu, sigma=sigma_adjusted, size=50)
 
 	# Plot
-	fig9 = go.Figure()  # Changed from fig6 to fig9
+	fig11 = go.Figure()  # Changed from fig6 to fig9
 
 	# Add the PDF line (y-axis on the left)
-	fig9.add_trace(go.Scatter(x=stock_prices, y=pdf_values, mode='lines', name='Probability Density'))
+	fig11.add_trace(go.Scatter(x=stock_prices, y=pdf_values, mode='lines', name='Probability Density'))
 
 	# Add histogram (y-axis on the right)
-	fig9.add_trace(go.Histogram(x=random_outcomes, yaxis='y2', name='Sample Outcomes', opacity=0.7, nbinsx=40))
+	fig11.add_trace(go.Histogram(x=random_outcomes, yaxis='y2', name='Sample Outcomes', opacity=0.7, nbinsx=40))
 
 	# Update layout to include a secondary y-axis and adjust x-axis range
-	fig9.update_layout(title='Naive Implied Probability Distribution & Sample Outcomes',
+	fig11.update_layout(title='Naive Implied Probability Distribution & Sample Outcomes',
 	                  xaxis_title='Stock Price',
 	                  yaxis_title='Naive Distribution',
 	                  yaxis2=dict(title='Sample Count', overlaying='y', side='right'),
@@ -1212,7 +1213,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	fig10.add_trace(
 	    go.Histogram(
 	        x=closest_rows['Forward_63d_price'],  # Changed 21d to 63d
-	        nbinsx=40
+	        nbinsx=40, 
+		showlegend=False
 	    )
 	)
 	fig10.add_trace(kde_trace, secondary_y=True)
