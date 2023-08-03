@@ -874,6 +874,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    )
 
 	fig2.update_layout(annotations=dict(xanchor='left', xshift=10), title=f'Forward 21 Day Distribution for {ticker}')
+	fig2.update_layout(yaxis2=dict(showticklabels=False))
 	fig2.update_xaxes(range=x_range)  # limit x-axis to ±4 standard deviations
 
 
@@ -1114,6 +1115,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	        font=dict(color=color, size=12)
 	    )
 	fig5.update_layout(title_text=f'Forward 5 Day Distribution for {ticker}')
+	fig5.update_layout(yaxis2=dict(showticklabels=False))
 	fig5.update_layout(
 	    yaxis2=dict(title=None, overlaying='y', side='right'),
 	    annotations=dict(xanchor='left', xshift=10)
@@ -1202,7 +1204,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	# 2. Calculate KDE
 	kde_x = np.linspace(x_range[0], x_range[1], 400)
 	kde_y = stats.gaussian_kde(closest_rows['Forward_63d_price'].values)(kde_x)  # Changed 21d to 63d
-	kde_trace = fig9.data[0]  # Refers to fig9 instead of fig6
+	kde_trace = fig11.data[0]  # Refers to fig9 instead of fig6
 	kde_trace.name = "Market Implied Distribution"
 	kde_trace.line.color = 'gray'
 
@@ -1250,6 +1252,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	    )
 
 	fig10.update_layout(annotations=dict(xanchor='left', xshift=10), title=f'Forward 63 Day Distribution for {ticker}')  # Changed 21d to 63d
+	fig10.update_layout(yaxis2=dict(showticklabels=False))
 	fig10.update_xaxes(range=x_range)  # limit x-axis to ±4 standard deviations
 	st.plotly_chart(fig) #traditional 5 and 21d heatmap
 	st.plotly_chart(fig5) #fwd 5 histogram
