@@ -804,8 +804,9 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	                  yaxis_title='Naive Distribution',
 	                  yaxis2=dict(title='Sample Count', overlaying='y', side='right'),
 	                  xaxis=dict(tickformat='$,.2f', range=[x_min, x_max]))
-
-
+	
+	mean_forward_prices = {}
+	median_forward_prices = {}
 	# Calculate the forward 21-day prices from the percentage returns
 	for lookback in lookbacks:
 		if atr== "atr":
@@ -814,13 +815,12 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 		else:
 			closest_rows[f'Forward_{lookback}d_pct_proportion'] = closest_rows[f'Forward_{lookback}d_pct_rank'] / 100
 			closest_rows[f'Forward_{lookback}d_price'] = last_close * (1 + closest_rows[f'Forward_{lookback}d_pct_proportion'])
+		mean_forward_prices[f'{lookback}d'] = closest_rows[f'Forward_{lookback}d_price'].mean()
+		median_forward_prices[f'{lookback}d'] = closest_rows[f'Forward_{lookback}d_price'].median()
 	
 
-	mean_forward_21d_price = last_close * (1 + mean_forward_21d_closest / 100)
-	median_forward_21d_price = last_close * (1 + median_forward_21d_closest / 100)
 
 	# 1. Limiting the x-axis to 4 standard deviations
-	mean_price = closest_rows['Forward_21d_price'].mean()
 	mean_price = closest_rows['Forward_21d_price'].mean()
 	std_price = closest_rows['Forward_21d_price'].std()
 
@@ -851,19 +851,17 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	    secondary_y=True
 	)
 
-	fig2.add_vline(x=mean_forward_21d_price, line_color="green")
-	fig2.add_vline(x=median_forward_21d_price, line_color="blue")
+	fig2.add_vline(x=mean_forward_prices['21d'], line_color="green")
+	fig2.add_vline(x=median_forward_prices['21d'], line_color="blue")
 	fig2.add_vline(x=last_close, line_color="white")
 	# Add annotations at the left edge
-	annotations_y = [0.95, 0.90]  # positions to stack the annotations
-	annotations_y.extend([0.85])  # Add another position for the new annotation
+	annotations_y = [0.95, 0.90, 0.85]  # positions to stack the annotations
 	texts = [
-	    f"Mean = {mean_forward_21d_price:.2f}",
-	    f"Median = {median_forward_21d_price:.2f}"
+	    f"Mean = {mean_forward_prices['21d']:.2f}",
+	    f"Median = {median_forward_prices['21d']:.2f}",
+	    f"Last Close = {last_close:.2f}"
 	]
-	colors = ["green", "blue"]
-	texts.extend([f"Last Close = {last_close:.2f}"])
-	colors.extend(["white"])
+	colors = ["green", "blue", "white"]
 	# Add annotations
 	for i, (y, text, color) in enumerate(zip(annotations_y, texts, colors)):
 	    fig2.add_annotation(
@@ -1058,16 +1056,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	pdf_trace_5d.line.color = 'gray'
 
 
-	mean_forward_5d_price = last_close * (1 + mean_forward_5d_closest / 100)
-	median_forward_5d_price = last_close * (1 + median_forward_5d_closest / 100)
-
-	closest_rows['Forward_5d_pct_proportion'] = closest_rows['Forward_5d_pct_rank'] / 100
-
-	# Calculate the forward 5-day prices based on these proportions
-	closest_rows['Forward_5d_price'] = last_close * (1 + closest_rows['Forward_5d_pct_proportion'])
-
-	mean_forward_5d_price = last_close * (1 + mean_forward_5d_closest / 100)
-	median_forward_5d_price = last_close * (1 + median_forward_5d_closest / 100)
 
 	fig5 = px.histogram(
 	    closest_rows, 
@@ -1083,17 +1071,18 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	fig5.add_trace(pdf_trace_5d.update(yaxis='y2'))  
 
 	# Add vertical lines for mean, median, and last close
-	fig5.add_vline(x=mean_forward_5d_price, line_color="green")
-	fig5.add_vline(x=median_forward_5d_price, line_color="blue")
+	fig5.add_vline(x=mean_forward_prices['5d'], line_color="green")
+	fig5.add_vline(x=median_forward_prices['5d'], line_color="blue")
 	fig5.add_vline(x=last_close, line_color="white")
-
+	
 	# Add annotations at the left edge
-	annotations_y_5d = [0.95, 0.90]  # positions to stack the annotations
+	annotations_y_5d = [0.95, 0.90, 0.85]  # positions to stack the annotations
 	texts_5d = [
-	    f"Mean = {mean_forward_5d_price:.2f}",
-	    f"Median = {median_forward_5d_price:.2f}"
+	    f"Mean = {mean_forward_prices['5d']:.2f}",
+	    f"Median = {median_forward_prices['5d']:.2f}",
+	    f"Last Close = {last_close:.2f}"
 	]
-	colors = ["green", "blue"]
+	colors_5d = ["green", "blue", "white"]
 	annotations_y_5d.extend([0.85])  # Add another position for the new annotation
 	texts_5d.extend([f"Last Close = {last_close:.2f}"])
 	colors.extend(["white"])
@@ -1181,8 +1170,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	                  xaxis=dict(tickformat='$,.2f', range=[x_min, x_max]))
 
 
-	mean_forward_63d_price = last_close * (1 + mean_forward_63d_closest / 100)  # Changed 21d to 63d
-	median_forward_63d_price = last_close * (1 + median_forward_63d_closest / 100)  # Changed 21d to 63d
 
 	# 1. Limiting the x-axis to 4 standard deviations
 	mean_price = closest_rows['Forward_63d_price'].mean()  # Changed 21d to 63d
@@ -1216,17 +1203,19 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	    secondary_y=True
 	)
 
-	fig10.add_vline(x=mean_forward_63d_price, line_color="green")  # Changed 21d to 63d
-	fig10.add_vline(x=median_forward_63d_price, line_color="blue")  # Changed 21d to 63d
+	fig10.add_vline(x=mean_forward_prices['63d'], line_color="green")  # Changed 21d to 63d
+	fig10.add_vline(x=median_forward_prices['63d'], line_color="blue")  # Changed 21d to 63d
 	fig10.add_vline(x=last_close, line_color="white")
-
+	
 	# Add annotations at the left edge
-	annotations_y = [0.95, 0.90]  # positions to stack the annotations
-	texts = [
-	    f"Mean = {mean_forward_63d_price:.2f}",  # Changed 21d to 63d
-	    f"Median = {median_forward_63d_price:.2f}"  # Changed 21d to 63d
+	annotations_y_63d = [0.95, 0.90, 0.85]  # positions to stack the annotations
+	texts_63d = [
+	    f"Mean = {mean_forward_prices['63d']:.2f}",  # Changed 21d to 63d
+	    f"Median = {median_forward_prices['63d']:.2f}",  # Changed 21d to 63d
+	    f"Last Close = {last_close:.2f}"
 	]
-	colors = ["green", "blue"]
+	colors_63d = ["green", "blue", "white"]
+
 
 	# Add annotations
 	for i, (y, text, color) in enumerate(zip(annotations_y, texts, colors)):
@@ -1269,3 +1258,7 @@ atr = st.text_input("ATR's or % Historical Returns?:")
 # Call the function with the user input
 if st.button("Generate Figures"):
     fig_creation(ticker, tgt_date_range, end_date, sigma, days,atr)	
+
+	
+	
+	
