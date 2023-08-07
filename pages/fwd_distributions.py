@@ -816,10 +816,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 
 	        # Calculate the forward prices using multiples of the most recent ATR
 	        closest_rows[f'Forward_{lookback}d_price'] = last_close + (data[f'Forward_{lookback}d'] * most_recent_atr)
-	    else:
-	        # Calculate the forward proportion
-	        closest_rows[f'Forward_{lookback}d_pct_proportion'] = closest_rows[f'Forward_{lookback}d_pct_rank'] / 100
-
+	else:
+		closest_rows[f'Forward_{lookback}d_pct_proportion'] = closest_rows[f'Forward_{lookback}d_pct_rank'] / 100
 	        # Calculate the forward prices using percentage returns
 	        closest_rows[f'Forward_{lookback}d_price'] = last_close * (1 + closest_rows[f'Forward_{lookback}d_pct_proportion'])
 	
