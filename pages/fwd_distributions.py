@@ -402,7 +402,7 @@ yf.pdr_override()
 # direction="Short"
 # end_date=(dt.date.today()+dt.timedelta(days=1)).strftime('%Y-%m-%d') 
 	# end_date = '2020-02-18'  
-def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
+def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	end_date = end_date
 	tgt_date_range=tgt_date_range
 	data = pdr.get_data_yahoo(ticker,end=end_date) 
@@ -811,7 +811,18 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	closest_rows['Forward_21d_pct_proportion'] = closest_rows['Forward_21d_pct_rank'] / 100
 
 	# Calculate the forward 21-day prices from the percentage returns
-	closest_rows['Forward_21d_price'] = last_close * (1 + closest_rows['Forward_21d_pct_proportion'])
+	if atr== "atr":
+		most_recent_atr = data['ATR'].iloc[-1]
+
+	        # Calculate the forward prices using multiples of the most recent ATR
+	        closest_rows[f'Forward_{lookback}d_price'] = last_close + (data[f'Forward_{lookback}d'] * most_recent_atr)
+	    else:
+	        # Calculate the forward proportion
+	        closest_rows[f'Forward_{lookback}d_pct_proportion'] = closest_rows[f'Forward_{lookback}d_pct_rank'] / 100
+
+	        # Calculate the forward prices using percentage returns
+	        closest_rows[f'Forward_{lookback}d_price'] = last_close * (1 + closest_rows[f'Forward_{lookback}d_pct_proportion'])
+	
 
 	mean_forward_21d_price = last_close * (1 + mean_forward_21d_closest / 100)
 	median_forward_21d_price = last_close * (1 + median_forward_21d_closest / 100)
@@ -1036,10 +1047,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	                   yaxis2=dict(title='Sample Count', overlaying='y', side='right'),
 	                   xaxis=dict(tickformat='$,.2f', range=[x_min_5d, x_max_5d]))
 
-	closest_rows['Forward_5d_pct_proportion'] = closest_rows['Forward_5d_pct_rank'] / 100
-
-	# Calculate the forward 5-day prices from the percentage returns
-	closest_rows['Forward_5d_price'] = last_close * (1 + closest_rows['Forward_5d_pct_proportion'])
 
 	# Calculate mean and standard deviation for Forward_5d_price
 	mean_price_5d = closest_rows['Forward_5d_price'].mean()
@@ -1058,12 +1065,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	pdf_trace_5d.name="Market Implied Distribution"
 	pdf_trace_5d.line.color = 'gray'
 
-	
-	# Create the histogram for Forward 5d Returns using px.histogram
-	closest_rows['Forward_5d_pct_proportion'] = closest_rows['Forward_5d_pct_rank'] / 100
-
-	# Calculate the forward 5-day prices based on these proportions
-	closest_rows['Forward_5d_price'] = last_close * (1 + closest_rows['Forward_5d_pct_proportion'])
 
 	mean_forward_5d_price = last_close * (1 + mean_forward_5d_closest / 100)
 	median_forward_5d_price = last_close * (1 + median_forward_5d_closest / 100)
@@ -1187,10 +1188,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days):
 	                  yaxis2=dict(title='Sample Count', overlaying='y', side='right'),
 	                  xaxis=dict(tickformat='$,.2f', range=[x_min, x_max]))
 
-	closest_rows['Forward_63d_pct_proportion'] = closest_rows['Forward_63d_pct_rank'] / 100  # Changed 21d to 63d
-
-	# Calculate the forward 63-day prices from the percentage returns
-	closest_rows['Forward_63d_price'] = last_close * (1 + closest_rows['Forward_63d_pct_proportion'])  # Changed 21d to 63d
 
 	mean_forward_63d_price = last_close * (1 + mean_forward_63d_closest / 100)  # Changed 21d to 63d
 	median_forward_63d_price = last_close * (1 + median_forward_63d_closest / 100)  # Changed 21d to 63d
@@ -1275,7 +1272,8 @@ end_date_default = dt.date.today() + dt.timedelta(days=1)
 end_date = st.date_input("Enter End Date:", value=end_date_default)
 sigma = st.number_input("Enter Implied Vol:", value=0.25)  # Example default value of 1.0, adjust as needed
 days = st.number_input("Enter Days:", value=21, format="%i")  # Example default value of 21, adjust as needed
+ticker = st.text_input("ATR's or % Historical Returns?:")
 
 # Call the function with the user input
 if st.button("Generate Figures"):
-    fig_creation(ticker, tgt_date_range, end_date, sigma, days)	
+    fig_creation(ticker, tgt_date_range, end_date, sigma, days,atr)	
