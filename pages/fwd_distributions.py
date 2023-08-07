@@ -1240,8 +1240,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	# fig3.show() #trailing 252 and 63d heatmap
 	# # fig4.show() #random sample of 21 returns histogram
 	
-	st.write(f"Average Forward Vol Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_vol_change} | Average Percentile rank: {final_avg_percentile_forward_vol}%")
-	st.write(f"Average Forward % Change (5d, 21d" + (", 63d" if num_metrics == 3 else "") + f"): {final_avg_forward_pct} | Average Percentile rank: {final_avg_percentile_forward_pct}%")
 
 # fig_creation('XLK', 12, (dt.date.today() + dt.timedelta(days=1)).strftime('%Y-%m-%d'), .173, 21) 
 # fig_creation('HD', 12, "2010-04-23", .293, 21)
