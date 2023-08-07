@@ -457,20 +457,11 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 
 	# Calculate Trailing and Forward returns for each lookback
 	for lookback in lookbacks:
-	    # Trailing performance
-	    data[f'Trailing_{lookback}d'] = (data['Close'] - data['Close'].shift(lookback)) /data['ATR'].shift(lookback)
-	    
-	    # Forward performance
-	    data[f'Forward_{lookback}d'] = (data['Close'].shift(-lookback) - data['Close']) / data['Close']
-
-	# Calculate percent ranks for trailing returns and convert forward returns to percentage format
-	for lookback in lookbacks:
-	    data[f'Trailing_{lookback}d_pct_rank'] = (data[f'Trailing_{lookback}d'].rank(pct=True) * 10).round(0)
-	    data[f'Forward_{lookback}d_pct_rank'] = data[f'Forward_{lookback}d'] * 100
-
-	# Fill NA values for Forward return columns
-	for lookback in lookbacks:
-	    data[f'Forward_{lookback}d_pct_rank'].fillna(0, inplace=True)
+		data[f'Trailing_{lookback}d'] = (data['Close'] - data['Close'].shift(lookback)) / data['ATR'].shift(lookback)
+		if atr == "atr":
+			data[f'Forward_{lookback}d'] = (data['Close'].shift(-lookback) - data['Close']) / data['ATR'].shift(-lookback)
+		else:
+			data[f'Forward_{lookback}d'] = (data['Close'].shift(-lookback) - data['Close']) / data['Close']
 
 	data['pct_change'] = data['Close'].pct_change()
 
@@ -808,7 +799,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	                  yaxis2=dict(title='Sample Count', overlaying='y', side='right'),
 	                  xaxis=dict(tickformat='$,.2f', range=[x_min, x_max]))
 
-	closest_rows['Forward_21d_pct_proportion'] = closest_rows['Forward_21d_pct_rank'] / 100
 
 	# Calculate the forward 21-day prices from the percentage returns
 	if atr== "atr":
