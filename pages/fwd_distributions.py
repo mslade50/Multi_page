@@ -1267,7 +1267,7 @@ end_date_default = dt.date.today() + dt.timedelta(days=1)
 end_date = st.date_input("Enter End Date:", value=end_date_default)
 sigma = st.number_input("Enter Implied Vol:", value=0.25)  # Example default value of 1.0, adjust as needed
 days = st.number_input("Enter Days:", value=21, format="%i")  # Example default value of 21, adjust as needed
-ticker = st.text_input("ATR's or % Historical Returns?:")
+atr = st.text_input("ATR's or % Historical Returns?:")
 
 # Call the function with the user input
 if st.button("Generate Figures"):
