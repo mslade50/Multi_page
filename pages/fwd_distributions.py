@@ -454,6 +454,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	# Calculate performance with respect to ATR
 	# List of lookbacks
 	lookbacks = [5, 21, 63, 126, 252]
+	most_recent_atr = data['ATR'].iloc[-1]
 
 	# Calculate Trailing and Forward returns for each lookback
 	for lookback in lookbacks:
