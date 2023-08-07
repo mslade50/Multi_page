@@ -466,7 +466,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	for lookback in lookbacks:
 		if atr == "atr":
 			data[f'Trailing_{lookback}d_pct_rank'] = (data[f'Trailing_{lookback}d'].rank(pct=True) * 10).round(0)
-			data[f'Forward_{lookback}d_pct_rank'] = (data[f'Forward_{lookback}d'] * most_recent_atr)/data['Close']*100
+			data[f'Forward_{lookback}d_pct_rank'] = (data[f'Forward_{lookback}d'] * data['ATR'])/data['Close']*100
 		else:
 			data[f'Trailing_{lookback}d_pct_rank'] = (data[f'Trailing_{lookback}d'].rank(pct=True) * 10).round(0)
 			data[f'Forward_{lookback}d_pct_rank'] = data[f'Forward_{lookback}d'] * 100
