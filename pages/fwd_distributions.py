@@ -463,12 +463,15 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 		else:
 			data[f'Forward_{lookback}d'] = (data['Close'].shift(-lookback) - data['Close']) / data['Close']
 	for lookback in lookbacks:
-		data[f'Trailing_{lookback}d_pct_rank'] = (data[f'Trailing_{lookback}d'].rank(pct=True) * 10).round(0)
-		data[f'Forward_{lookback}d_pct_rank'] = data[f'Forward_{lookback}d'] * 100
-	
-	for lookback in lookbacks:
-		data[f'Forward_{lookback}d_pct_rank'].fillna(0, inplace=True)
-		data['pct_change'] = data['Close'].pct_change()
+		if atr == "atr":
+			data[f'Trailing_{lookback}d_pct_rank'] = (data[f'Trailing_{lookback}d'].rank(pct=True) * 10).round(0)
+			data[f'Forward_{lookback}d_pct_rank'] = (data[f'Forward_{lookback}d'] * most_recent_atr)/data['Close'][-1]
+		else:
+			data[f'Trailing_{lookback}d_pct_rank'] = (data[f'Trailing_{lookback}d'].rank(pct=True) * 10).round(0)
+			data[f'Forward_{lookback}d_pct_rank'] = data[f'Forward_{lookback}d'] * 100
+		for lookback in lookbacks:
+			data[f'Forward_{lookback}d_pct_rank'].fillna(0, inplace=True)
+			data['pct_change'] = data['Close'].pct_change()
 		
 	data['pct_change'] = data['Close'].pct_change()
 	# Square the percentage changes
