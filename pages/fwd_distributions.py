@@ -1222,7 +1222,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 
 
 	# Add annotations
-	for i, (y, text, color) in enumerate(zip(annotations_y, texts, colors)):
+	for i, (y, text, color) in enumerate(zip(annotations_y, text_63d, colors)):
 	    fig10.add_annotation(
 	        xref="paper",
 	        yref="paper",
