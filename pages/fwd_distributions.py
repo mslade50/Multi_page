@@ -704,6 +704,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 
 	# Exclude the most recent 63 rows
 	filtered_df = merged_df.iloc[:-63].copy()
+	filtered_df.index = pd.to_datetime(filtered_df.index)  # Convert the index to a datetime object
+	filtered_df = filtered_df[filtered_df.index.year > 2000] 
 
 	# Calculate the distance for each row and sort the dataframe by these distances
 	filtered_df['distance'] = filtered_df.apply(lambda row: compute_distance(row, current_values), axis=1)
