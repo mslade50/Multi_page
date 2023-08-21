@@ -11,4 +11,4 @@ yahoo_fin==0.8.9.1  # You might want to check the appropriate version.
 matplotlib==3.4.3  # You might want to check the appropriate version.
 seaborn==0.11.2  # You might want to check the appropriate version.
 scipy==1.7.3 
-pandas_market_calendars==1.6.2
+pandas_market_calendars==4.0.2
