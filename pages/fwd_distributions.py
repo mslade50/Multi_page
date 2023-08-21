@@ -1244,7 +1244,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	st.plotly_chart(fig5) #fwd 5 histogram
 	st.plotly_chart(fig2) #Fwd 21 histogram
 	st.plotly_chart(fig10) #Fwd 63 histogram
-	st.table(index_df)
+	st.table(index_df.reset_index(drop=True))
 	# # fig6.show() #naive implied distribution 21d
 	# fig3.show() #trailing 252 and 63d heatmap
 	# # fig4.show() #random sample of 21 returns histogram
