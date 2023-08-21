@@ -11,4 +11,4 @@ yahoo_fin==0.8.9.1
 matplotlib==3.4.3  
 seaborn==0.11.2  
 scipy==1.7.3
-pandas_market_calendars==4.1.4
+pandas_market_calendars==3.5
