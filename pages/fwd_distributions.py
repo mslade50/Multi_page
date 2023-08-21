@@ -427,7 +427,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 				df_year['Year'] = year + 4  # Adjust here
 				df_year['IndexWithinYear'] = df_year.groupby('Year').cumcount()
 				df_year['Average'] = df_year[ticker]
-				df_year['Average_rnk'] = (df_year['Average'].rank(pct=True)*10).round(0)
+				df_year['Average_rnk'] = (df_year['Average']/10).round(0)
 				dfs.append(df_year)
 			except Exception:
 				print(f"No data on {ticker} for the year {year}")
