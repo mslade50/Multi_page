@@ -710,8 +710,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	# Calculate the distance for each row and sort the dataframe by these distances
 	filtered_df['distance'] = filtered_df.apply(lambda row: compute_distance(row, current_values), axis=1)
 	closest_rows = filtered_df.nsmallest(50, 'distance').round(2)
-
-
+	index_df = closest_rows.index.to_frame(name='Date')
+	
 	# Compute the mean and median of Forward_21d_pct_rank from the 50 closest rows
 
 	mean_forward_5d_closest = round(closest_rows['Forward_5d_pct_rank'].mean(), 2)
@@ -1242,6 +1242,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	st.plotly_chart(fig5) #fwd 5 histogram
 	st.plotly_chart(fig2) #Fwd 21 histogram
 	st.plotly_chart(fig10) #Fwd 63 histogram
+	st.table(index_df)
 	# # fig6.show() #naive implied distribution 21d
 	# fig3.show() #trailing 252 and 63d heatmap
 	# # fig4.show() #random sample of 21 returns histogram
