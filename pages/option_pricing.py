@@ -5,8 +5,6 @@ import numpy as np
 from scipy.stats import gaussian_kde
 from scipy.integrate import quad
 import pandas as pd
-import smtplib
-from email.mime.text import MIMEText
 import pandas_market_calendars as mcal
 import yfinance as yf
 
