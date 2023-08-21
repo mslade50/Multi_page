@@ -3,10 +3,10 @@ from mdm_module_3 import fig_creation
 from option_scrape import option_chain_prices
 import datetime as dt
 import numpy as np
+import pandas_market_calendars as mcal
 from scipy.stats import gaussian_kde
 from scipy.integrate import quad
 import pandas as pd
-import pandas_market_calendars as mcal
 import yfinance as yf
 
 ticker = st.text_input('Enter the ticker symbol:', value='SPY')
