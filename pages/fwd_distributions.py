@@ -710,7 +710,9 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	# Calculate the distance for each row and sort the dataframe by these distances
 	filtered_df['distance'] = filtered_df.apply(lambda row: compute_distance(row, current_values), axis=1)
 	closest_rows = filtered_df.nsmallest(50, 'distance').round(2)
-	index_df = closest_rows.index.to_frame(name='Date')
+	index_df = closest_rows.index.to_frame()
+	index_df.iloc[:, 0] = index_df.iloc[:, 0].dt.date
+	index_df.rename(columns={index_df.columns[0]: 'Date'}, inplace=True)
 	
 	# Compute the mean and median of Forward_21d_pct_rank from the 50 closest rows
 
