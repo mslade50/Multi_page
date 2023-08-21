@@ -1,5 +1,6 @@
 import streamlit as st
-from pages import indicies, single_names, currency_pairs, commodities, user_input, variance_sim, trade_sizing
+from pages import indicies, single_names, currency_pairs, commodities, user_input, variance_sim, trade_sizing, option_pricing  # Added option_pricing
+
 
 st.set_page_config(page_title="Multi-Page Dashboard", page_icon=":chart_with_upwards_trend:")
 
@@ -35,6 +36,10 @@ def fwd_distributions_page():
     st.sidebar.markdown("# Forward Distributions")
     fwd_distributions.fwd_distributions_app()
 
+def option_pricing_page():
+    st.sidebar.markdown("# Option Pricing")
+    option_pricing.option_pricing_app()  # Assuming the function name in the option_pricing module
+
 page_names_to_funcs = {
     "Indices": indicies_page,
     "Single Names": single_names_page,
@@ -43,7 +48,8 @@ page_names_to_funcs = {
     "User Input": user_input_page,
     "Variance Simulation": variance_sim_page,
     "Trade Sizing": trade_sizing_page,
-    "Forward Distributions": fwd_distributions_page  # added this line
+    "Forward Distributions": fwd_distributions_page, # Assuming this was already defined
+    "Option Pricing": option_pricing_page  # Added this line
 }
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
