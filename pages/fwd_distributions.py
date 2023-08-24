@@ -453,7 +453,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 
 	# Calculate performance with respect to ATR
 	# List of lookbacks
-	lookbacks = [5, 21, 63, 126, 252]
+	lookbacks = [1,5, 21, 63, 126, 252]
 	most_recent_atr = data['ATR'].iloc[-1]
 
 	# Calculate Trailing and Forward returns for each lookback
@@ -688,10 +688,11 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	)
 	
 	
-	def compute_distance(row, target_values, avg_rank_weight=2.5):
+	def compute_distance(row, target_values, avg_rank_weight=3.15):
 	    return np.sqrt(
 	        avg_rank_weight * (row['Average_rnk'] - target_values[0])**2 +  # Increased importance
-	        (row['Trailing_5d_pct_rank'] - target_values[1])**2 +
+	        (row['Trailing_1d_pct_rank'] - target_values[1])**2 +
+		    (row['Trailing_5d_pct_rank'] - target_values[1])**2 +
 	        (row['Trailing_21d_pct_rank'] - target_values[2])**2 +
 	        (row['Trailing_63d_pct_rank'] - target_values[3])**2 + 
 	        (row['Trailing_126d_pct_rank'] - target_values[4])**2 + 
