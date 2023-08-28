@@ -450,7 +450,7 @@ def seasonals_chart(tick):
 
 	fig = go.Figure()
 
-	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name=cycle_label, line=dict(color='orange')))
+	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name="Pre-Election", line=dict(color='orange')))
 	if plot_ytd == 'Yes':
 	    fig.add_trace(go.Scatter(x=days2.index, y=days2['this_yr'], mode='lines', name='Year to Date', line=dict(color='green')))
 	y1 = max(s4.max(), days2['this_yr'].max()) if plot_ytd == 'Yes' else s4.max()
