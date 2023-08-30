@@ -40,7 +40,7 @@ if st.button('Get Prices'):
         option_value, _ = quad(integrand, min_limit, max_limit)
     
         return option_value, prob_profit, payoff
-    option_data = option_chain_prices(ticker_2, price_type="no")
+    option_data = option_chain_prices(ticker_2, price_type="midpoint")
     available_expiries = option_data["Available_Expiries"]
     
     def trading_days_to_expiry(expiry_date):
