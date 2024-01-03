@@ -33,9 +33,9 @@ import streamlit as st
 ###cycle years are 1.pre-election 2.election 3.post election 4.midterm
 
 ticker='^GSPC'
-cycle_start=1951
-cycle_label='Third Year of Cycle'
-cycle_var='pre_election'
+cycle_start=1952
+cycle_label='Election'
+cycle_var='election'
 
 def seasonal_return_ranks(ticker,end):
 	spx1=yf.Ticker(ticker)
