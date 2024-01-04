@@ -18,7 +18,7 @@ def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1952
 	cycle_label='Election'
-	cycle_var='election'
+	cycle_var='pre_election'
 	adjust=0
 	plot_ytd="Yes"
 	all_=""
@@ -450,7 +450,7 @@ def seasonals_chart(tick):
 
 	fig = go.Figure()
 
-	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name="Pre-Election", line=dict(color='orange')))
+	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name=cycle_label, line=dict(color='orange')))
 	if plot_ytd == 'Yes':
 	    fig.add_trace(go.Scatter(x=days2.index, y=days2['this_yr'], mode='lines', name='Year to Date', line=dict(color='green')))
 	y1 = max(s4.max(), days2['this_yr'].max()) if plot_ytd == 'Yes' else s4.max()
@@ -539,7 +539,7 @@ def seasonals_chart(tick):
 	    create_annotation(
 		1.02,
 		1.10,
-		f"10d and 21d Concordance: {sign_agreement_10d}, {sign_agreement_21d}",
+		f"5d and 21d Concordance: {sign_agreement_5d}, {sign_agreement_21d}",
 		'white'
 	    )
 	)
