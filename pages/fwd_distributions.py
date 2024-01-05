@@ -53,7 +53,7 @@ def seasonal_return_ranks(ticker,end):
 
 	#second dataframe explicity to count the number of trading days so far this year
 	now = dt.datetime.now()+timedelta(days=1)
-	days = yf.download(ticker, start="2023-01-01", end=now)
+	days = yf.download(ticker, start="2024-01-01", end=now)
 	days["log_return"] = np.log(days["Close"] / days["Close"].shift(1))*100
 	days['day_of_year'] = days.index.day_of_year
 	days['this_yr']=days.log_return.cumsum()
