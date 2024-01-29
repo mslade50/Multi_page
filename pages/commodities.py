@@ -12,13 +12,13 @@ import plotly.graph_objs as go
 st.title("Commodities")
 def seasonals_chart(tick):
 	ticker=tick
-	cycle_start=1951
+	cycle_start=1952
 	cycle_label='Third Year of Cycle'
-	cycle_var='pre_election'
+	cycle_var='election'
 	adjust=0
 	plot_ytd="Yes"
 	all_=""
-	end_date=dt.datetime(2022,12,30)
+	end_date=dt.datetime(2023,12,30)
 
 	spx1=yf.Ticker(ticker)
 	spx = spx1.history(period="max",end=end_date)
@@ -50,7 +50,7 @@ def seasonals_chart(tick):
 
 	#second dataframe explicity to count the number of trading days so far this year
 	now = dt.datetime.now()+timedelta(days=1)
-	days = yf.download(ticker, start="2022-12-31", end=now)
+	days = yf.download(ticker, start="2023-12-31", end=now)
 	days["log_return"] = np.log(days["Close"] / days["Close"].shift(1))*100
 	days['day_of_year'] = days.index.day_of_year
 	days['this_yr']=days.log_return.cumsum()
