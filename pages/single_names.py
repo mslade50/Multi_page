@@ -29,10 +29,10 @@ def seasonals_chart(tick):
 	spx_rank['Trailing_21d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(21)) - 1
 
 	# Calculate percentile ranks for trailing 5-day returns on a rolling 750-day window
-	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_5d_percentile_rank'] = spx_rank['Trailing_5d_Returns'].rolling(window=2000).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	# Calculate percentile ranks for trailing 21-day returns on a rolling 750-day window
-	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=750).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
+	spx_rank['Trailing_21d_percentile_rank'] = spx_rank['Trailing_21d_Returns'].rolling(window=2000).apply(lambda x: pd.Series(x).rank(pct=True).iloc[-1])
 
 	dr21_rank=(spx_rank['Trailing_21d_percentile_rank'][-1]*100).round(2)
 	dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
@@ -49,7 +49,7 @@ def seasonals_chart(tick):
 
 	#second dataframe explicity to count the number of trading days so far this year
 	now = dt.datetime.now()+timedelta(days=1)
-	days = yf.download(ticker, start="2022-12-31", end=now)
+	days = yf.download(ticker, start="2023-12-31", end=now)
 	days["log_return"] = np.log(days["Close"] / days["Close"].shift(1))*100
 	days['day_of_year'] = days.index.day_of_year
 	days['this_yr']=days.log_return.cumsum()
