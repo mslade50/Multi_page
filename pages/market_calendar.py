@@ -184,7 +184,7 @@ def market_calendar_page():
 
     # Filter data
     high_impact_events = df_forex[df_forex['Impact'] == 'High Impact']
-    large_cap_earnings = df_earnings[df_earnings['market_cap'] > 50e9]
+    large_cap_earnings = df_earnings[df_earnings['marketcap'] > 50e9]
 
     # Convert date columns to datetime
     high_impact_events['Date'] = pd.to_datetime(high_impact_events['Date'])
