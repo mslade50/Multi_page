@@ -6,10 +6,9 @@ plotly==5.5.0
 ta==0.10.2
 altair==4.1.0
 requests==2.26.0
-pandas_datareader==0.10.0
-yahoo_fin==0.8.9.1
-matplotlib==3.4.3
-seaborn==0.11.2
+pandas_datareader==0.10.0  # You might want to check the appropriate version.
+yahoo_fin==0.8.9.1  # You might want to check the appropriate version.
+matplotlib==3.4.3  # You might want to check the appropriate version.
+seaborn==0.11.2  # You might want to check the appropriate version.
 scipy==1.7.3 
 pandas_market_calendars==4.0.2
-beautifulsoup4==4.10.0
