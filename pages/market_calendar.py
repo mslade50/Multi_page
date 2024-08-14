@@ -72,7 +72,7 @@ def scrape_calendar(url):
     
     calendar_table = soup.find('table', class_='calendar__table')
     if not calendar_table:
-        print(f"Could not find the calendar table on the page at {url}.")
+        st.error(f"Could not find the calendar table on the page at {url}.")
         return None, None
 
     rows = calendar_table.find_all('tr', class_='calendar__row')
@@ -156,7 +156,7 @@ def create_calendar_table(events_df, year, month):
 
     return cal
 
-# Main function for the Market Calendar page
+# Streamlit page function
 def market_calendar_page():
     st.title("Market Calendar")
 
@@ -173,6 +173,14 @@ def market_calendar_page():
             break
         if next_start_date:
             url = f"{base_url}?week={next_start_date.strftime('%b%d.%Y').lower()}"
+
+    if df_forex is None:
+        st.warning("No Forex data found.")
+        return
+
+    if df_earnings.empty:
+        st.warning("No earnings data found.")
+        return
 
     # Filter data
     high_impact_events = df_forex[df_forex['Impact'] == 'High Impact']
@@ -201,3 +209,6 @@ def market_calendar_page():
     st.write(f"Economic Events and Earnings Calendar - {calendar.month_name[month]} {year}")
     st.table(calendar_table)
 
+# Call the function to render the page
+if __name__ == "__main__":
+    market_calendar_page()
