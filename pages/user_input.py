@@ -63,7 +63,7 @@ def seasonals_chart(tick):
 
 	#second dataframe explicity to count the number of trading days so far this year
 	now = dt.datetime.now()+timedelta(days=1)
-	days = yf.download(ticker, start=end_date, end=this_yr_end)
+	days = yf.download(ticker, start=end_date, end=this_yr_end,progress=False)
 	days["simple_return"] = days["Close"] / days["Close"].shift(1) - 1
 	# Calculate cumulative simple return in percentage
 	days['this_yr'] = (1 + days['simple_return']).cumprod() - 1
