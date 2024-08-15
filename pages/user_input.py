@@ -457,16 +457,16 @@ def seasonals_chart(tick):
 	if plot_ytd == 'Yes':
 	    fig.add_trace(go.Scatter(x=days2.index, y=days2['this_yr'], mode='lines', name='Year to Date', line=dict(color='green')))
 
-	# # Plot individual cycle year lines with reduced opacity (40%)
-	for i, daily_returns in enumerate(yr_mid_master):  # Loop through your cycle year data
-		        cumulative_returns = np.cumsum(daily_returns)  # Convert to cumulative returns
-		        fig.add_trace(go.Scatter(
-		            x=range(len(cumulative_returns)), 
-		            y=cumulative_returns, 
-		            mode='lines', 
-		            name=f'Cycle Year {i+1}',
-		            line=dict(color='rgba(255, 255, 255, 0.4)')  # 40% opacity white lines
-		        ))
+	# # # Plot individual cycle year lines with reduced opacity (40%)
+	# for i, daily_returns in enumerate(yr_mid_master):  # Loop through your cycle year data
+	# 	        cumulative_returns = np.cumsum(daily_returns)  # Convert to cumulative returns
+	# 	        fig.add_trace(go.Scatter(
+	# 	            x=range(len(cumulative_returns)), 
+	# 	            y=cumulative_returns, 
+	# 	            mode='lines', 
+	# 	            name=f'Cycle Year {i+1}',
+	# 	            line=dict(color='rgba(255, 255, 255, 0.4)')  # 40% opacity white lines
+	# 	        ))
 	y1 = max(s4.max(), days2['this_yr'].max()) if plot_ytd == 'Yes' else s4.max()
 	y0=min(s4.min(),days2['this_yr'].min(),0)
 	# Assuming 'length' variable is defined and within the range of the x-axis
