@@ -450,9 +450,22 @@ def seasonals_chart(tick):
 
 	fig = go.Figure()
 
+	# Plot the seasonal average line
 	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name=cycle_label, line=dict(color='orange')))
+
+	# Plot the Year to Date line if required
 	if plot_ytd == 'Yes':
 	    fig.add_trace(go.Scatter(x=days2.index, y=days2['this_yr'], mode='lines', name='Year to Date', line=dict(color='green')))
+
+	# Plot individual cycle year lines with reduced opacity (40%)
+	for i, year_data in enumerate(yr_mid_master):  # Assuming yr_mid_master contains the individual year data for the cycle
+	    fig.add_trace(go.Scatter(
+		x=range(len(year_data)), 
+		y=np.cumsum(year_data),  # Assuming you're plotting cumulative returns
+		mode='lines', 
+		name=f'Cycle Year {i+1}',
+		line=dict(color='rgba(255, 255, 255, 0.4)')  # 40% opacity white lines
+	    ))
 	y1 = max(s4.max(), days2['this_yr'].max()) if plot_ytd == 'Yes' else s4.max()
 	y0=min(s4.min(),days2['this_yr'].min(),0)
 	# Assuming 'length' variable is defined and within the range of the x-axis
@@ -475,21 +488,7 @@ def seasonals_chart(tick):
 	    b_changes = b[window:] - b[:-window]
 	    return np.mean(np.sign(a_changes) == np.sign(b_changes))
 
-# 	correlations = []
-# 	window_size = 5
 
-# 	for i in range(len(s4_values) - window_size + 1):
-# 		window_s4 = s4_values[i : i + window_size]
-# 		window_this_year = this_year_values[i : i + window_size]
-# 		if np.isnan(window_s4).any() or np.isnan(window_this_year).any() or np.var(window_s4) == 0 or np.var(window_this_year) == 0:
-# 			correlations.append(np.nan)
-# 		else:
-# 			correlation_matrix = np.corrcoef(window_s4, window_this_year)
-# 			correlation_coefficient = correlation_matrix[0, 1]
-# 			correlations.append(correlation_coefficient)
-
-# 	average_correlation = pd.Series(correlations).mean()
-# 	average_correlation = f"{average_correlation:.2f}"
 
 	# Calculate sign agreement for 5-day, 10-day, and 21-day forward changes
 	sign_agreement_1d = sign_agreement(s4_values, this_year_values, window=1).round(2)
