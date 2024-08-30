@@ -531,6 +531,12 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	today_126d_rank = merged_df['Trailing_126d_pct_rank'].iloc[-1]
 	today_252d_rank = merged_df['Trailing_252d_pct_rank'].iloc[-1]
 	today_avg_rank = merged_df['Average_rnk'].iloc[-1]
+	merged_df['Avg_Next_5_Avg_Rank'] = merged_df['Average_rnk'].shift(-5).rolling(window=5).mean()
+	merged_df['Avg_Next_10_Avg_Rank'] = merged_df['Average_rnk'].shift(-10).rolling(window=10).mean()
+	merged_df['Avg_Next_21_Avg_Rank'] = merged_df['Average_rnk'].shift(-21).rolling(window=21).mean()
+	merged_df['Average_rnk'] = merged_df[['Avg_Next_5_Avg_Rank', 'Avg_Next_10_Avg_Rank', 'Avg_Next_21_Avg_Rank']].mean(axis=1)
+
+	
 	# For 21d
 	rows_for_21d = merged_df[(merged_df['Average_rnk'] == today_avg_rank) & (merged_df['Trailing_21d_pct_rank'] == today_21d_rank)]
 	mean_forward_21d_for_today = round(rows_for_21d['Forward_21d_pct_rank'].mean(), 2)
