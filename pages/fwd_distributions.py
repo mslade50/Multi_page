@@ -504,6 +504,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	data_subset = data[columns_subset]
 	# Perform the merge
 	merged_df = pd.merge(df, data_subset, left_index=True, right_index=True)
+	merged_df['Avg_Next_5_10_21_Seasonal_Ranks'] = merged_df[['Trailing_5d_pct_rank', 'Trailing_10d_pct_rank', 'Trailing_21d_pct_rank']].mean(axis=1)
 	# filepath=r"C:\Users\McKinley\Dropbox\MS Docs\Work\Sublime_Misc\52whigh.py"
 
 
@@ -530,7 +531,8 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	today_63d_rank = merged_df['Trailing_63d_pct_rank'].iloc[-1]
 	today_126d_rank = merged_df['Trailing_126d_pct_rank'].iloc[-1]
 	today_252d_rank = merged_df['Trailing_252d_pct_rank'].iloc[-1]
-	today_avg_rank = merged_df['Average_rnk'].iloc[-1]
+	today_avg_rank = merged_df['Avg_Next_5_10_21_Seasonal_Ranks'].iloc[-1]
+
 	# For 21d
 	rows_for_21d = merged_df[(merged_df['Average_rnk'] == today_avg_rank) & (merged_df['Trailing_21d_pct_rank'] == today_21d_rank)]
 	mean_forward_21d_for_today = round(rows_for_21d['Forward_21d_pct_rank'].mean(), 2)
