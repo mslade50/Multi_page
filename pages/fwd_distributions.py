@@ -1,37 +1,3 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
-import datetime as dt
-from datetime import date
-from datetime import timedelta
-import smtplib, ssl
-from pandas import ExcelWriter
-from email.message import EmailMessage
-import yfinance as yf
-from yahoo_fin import options as op
-import pandas as pd
-import pandas_datareader.data as web
-import scipy.stats
-from scipy import stats
-import ta
-from pandas_datareader import data as pdr
-from matplotlib import cm
-import plotly.io as pio
-from mpl_toolkits import mplot3d
-import plotly.express as px
-import seaborn as sns
-import plotly.graph_objects as go 
-from plotly.subplots import make_subplots
-from scipy.stats import gaussian_kde
-from scipy.stats import norm
-from yahoo_fin import stock_info as si
-import streamlit as st
-
-# ['^NDX','^GSPC','^RUT','^SOX','^DJT','^DJI','XLE','XLF','ETH-USD','BTC-USD','CL=F','HG=F','GC=F','SI=F','RB=F','NG=F','AAPL','TSLA','MSFT','OXY','JPM','GS','WMT','TLT','HYG',
-# 'FFTY','MTUM','XBI','EEM','DX-Y.NYB','EURUSD=X','AUDUSD=X','CHFUSD=X','CADUSD=X','^VIX','ZC=F']
-
-###cycle years are 1.pre-election 2.election 3.post election 4.midterm
-
 ticker='^GSPC'
 cycle_start=1952
 cycle_label='Election'
@@ -504,7 +470,6 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	data_subset = data[columns_subset]
 	# Perform the merge
 	merged_df = pd.merge(df, data_subset, left_index=True, right_index=True)
-	merged_df['Avg_Next_5_10_21_Seasonal_Ranks'] = merged_df[['Trailing_5d_pct_rank', 'Trailing_10d_pct_rank', 'Trailing_21d_pct_rank']].mean(axis=1)
 	# filepath=r"C:\Users\McKinley\Dropbox\MS Docs\Work\Sublime_Misc\52whigh.py"
 
 
@@ -531,7 +496,12 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	today_63d_rank = merged_df['Trailing_63d_pct_rank'].iloc[-1]
 	today_126d_rank = merged_df['Trailing_126d_pct_rank'].iloc[-1]
 	today_252d_rank = merged_df['Trailing_252d_pct_rank'].iloc[-1]
-	today_avg_rank = merged_df['Avg_Next_5_10_21_Seasonal_Ranks'].iloc[-1]
+	today_avg_rank = merged_df['Average_rnk'].iloc[-1]
+	merged_df['Avg_Next_5_Avg_Rank'] = merged_df['Average_rnk'].shift(-5).rolling(window=5).mean()
+	merged_df['Avg_Next_10_Avg_Rank'] = merged_df['Average_rnk'].shift(-10).rolling(window=10).mean()
+	merged_df['Avg_Next_21_Avg_Rank'] = merged_df['Average_rnk'].shift(-21).rolling(window=21).mean()
+	merged_df['Average_rnk'] = merged_df[['Avg_Next_5_Avg_Rank', 'Avg_Next_10_Avg_Rank', 'Avg_Next_21_Avg_Rank']].mean(axis=1)
+
 
 	# For 21d
 	rows_for_21d = merged_df[(merged_df['Average_rnk'] == today_avg_rank) & (merged_df['Trailing_21d_pct_rank'] == today_21d_rank)]
@@ -1267,8 +1237,4 @@ atr = st.text_input("ATR's or % Historical Returns?:")
 
 # Call the function with the user input
 if st.button("Generate Figures"):
-    fig_creation(ticker, tgt_date_range, end_date, sigma, days,atr)	
-
-	
-	
-	
+    fig_creation(ticker, tgt_date_range, end_date, sigma, days,atr)
