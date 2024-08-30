@@ -534,7 +534,7 @@ def fig_creation(ticker,tgt_date_range,end_date,sigma,days,atr):
 	merged_df['Avg_Next_5_Avg_Rank'] = merged_df['Average_rnk'].shift(-5).rolling(window=5).mean()
 	merged_df['Avg_Next_10_Avg_Rank'] = merged_df['Average_rnk'].shift(-10).rolling(window=10).mean()
 	merged_df['Avg_Next_21_Avg_Rank'] = merged_df['Average_rnk'].shift(-21).rolling(window=21).mean()
-	merged_df['Average_rnk'] = merged_df[['Avg_Next_5_Avg_Rank', 'Avg_Next_10_Avg_Rank', 'Avg_Next_21_Avg_Rank']].mean(axis=1)
+	merged_df['Average_rnk'] = merged_df[['Avg_Next_5_Avg_Rank', 'Avg_Next_10_Avg_Rank', 'Avg_Next_21_Avg_Rank']].mean(axis=1).round(0)
 
 	
 	# For 21d
