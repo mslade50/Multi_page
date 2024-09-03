@@ -416,9 +416,7 @@ def seasonals_chart(tick):
 	summary=pd.concat([df_mt_5d[length],df_mt_10d[length],df_mt_21d[length]],axis=1,keys=["f5","f10","f21"])
 	summary['Years']=years_mid
 	summary=summary.dropna()
-	summary_2=pd.concat([all_5d[length],all_10d[length],all_21d[length]],axis=1,keys=["f5","f10","f21"])
-	summary_2['Years']=years
-	summary_2=summary_2.dropna()
+	
 	percent_pos_5=round(len(summary.query('f5 > 0'))/len(summary.axes[0]),3)
 	percent_pos_10=round(len(summary.query('f10 > 0'))/len(summary.axes[0]),3)
 	percent_pos_21=round(len(summary.query('f21 > 0'))/len(summary.axes[0]),3)
@@ -618,28 +616,11 @@ def seasonals_chart(tick):
 	
 	# Add trace to the figure
 	fig3.add_trace(trace)
-
-	fig4 = go.Figure()
-	# Create table trace
-
-	trace = go.Table(
-	    header=dict(values=list(summary_2.columns),
-	                fill_color='black',
-	                align='left',
-		        font=dict(color='white')),
-	    cells=dict(values=[summary_2["f5"], summary_2["f10"], summary_2["f21"], summary_2["Years"]],
-	               fill_color='black',
-	               align='left',
-		       font=dict(color='white')))
-	
-	# Add trace to the figure
-	fig4.add_trace(trace)
-
 	
 	st.plotly_chart(fig)
 	st.plotly_chart(fig2)
 	st.plotly_chart(fig3)
-	st.plotly_chart(fig4)
+	
 	# Printing the statistics
 	st.markdown(f'''
 	Means...5d {summary["f5"].mean().round(2)},10d {summary["f10"].mean().round(2)},21d {summary["f21"].mean().round(2)}\n\n
