@@ -452,6 +452,7 @@ def seasonals_chart(tick):
 
 	# Plot the seasonal average line
 	fig.add_trace(go.Scatter(x=s4.index, y=s4.values, mode='lines', name=cycle_label, line=dict(color='orange')))
+	fig.add_trace(go.Scatter(x=s3.index, y=s3.values, mode='lines', name="All Years", line=dict(color='lightblue')))
 
 	# Plot the Year to Date line if required
 	if plot_ytd == 'Yes':
