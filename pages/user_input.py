@@ -36,6 +36,7 @@ def seasonals_chart(tick):
 	df.reset_index(inplace=True)
 	df['date_str'] = range(1,len(df)+1)
 	spx_rank=spx1.history(period="max",end=this_yr_end)
+	spx['Close'] = spx['Close'].fillna(method='ffill')
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
 
