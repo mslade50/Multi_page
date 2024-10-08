@@ -36,7 +36,6 @@ def seasonals_chart(tick):
 	df.reset_index(inplace=True)
 	df['date_str'] = range(1,len(df)+1)
 	spx_rank=spx1.history(period="max",end=this_yr_end)
-	spx['Close'] = spx['Close'].fillna(method='ffill')
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
 
@@ -493,20 +492,12 @@ def seasonals_chart(tick):
 	    return np.mean(np.sign(a_changes) == np.sign(b_changes))
 
 
-	def information_coefficient(predictions, actuals, window):
-	    return predictions.rolling(window).corr(actuals).fillna(0)
-	# Calculate sign agreement for 5-day, 10-day, and 21-day forward changes
-	# Align lengths of s4_values and this_year_values
-	min_length = min(len(s4_values), len(this_year_values))
-	aligned_s4_values = s4_values[:min_length]
-	aligned_this_year_values = this_year_values[:min_length]
-	
-	# Now calculate IC without future data issues
-	ic_1d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=1).round(2)
-	ic_5d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=5).round(2)
-	ic_10d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=10).round(2)
-	ic_21d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=21).round(2)
 
+	# Calculate sign agreement for 5-day, 10-day, and 21-day forward changes
+	sign_agreement_1d = sign_agreement(s4_values, this_year_values, window=1).round(2)
+	sign_agreement_5d = sign_agreement(s4_values, this_year_values, window=5).round(2)
+	sign_agreement_10d = sign_agreement(s4_values, this_year_values, window=10).round(2)
+	sign_agreement_21d = sign_agreement(s4_values, this_year_values, window=21).round(2)
 	# Add a white dot at the specified X coordinate and the interpolated Y value
 	fig.add_trace(go.Scatter(x=[length_value], y=[y_value_at_length], mode='markers', marker=dict(color='white', size=8), name='White Dot' ,showlegend=False))
 	def text_color(value, reverse=False):
@@ -548,10 +539,10 @@ def seasonals_chart(tick):
 	]
 	annotations.append(
 	    create_annotation(
-	        1.02,
-	        1.10,
-	        f"5d and 21d IC: {ic_5d}, {ic_21d}",
-	        'white'
+		1.02,
+		1.10,
+		f"5d and 21d Concordance: {sign_agreement_5d}, {sign_agreement_21d}",
+		'white'
 	    )
 	)
 # 	annotations.append(create_annotation(0.95, 1.12, f"Average 14-Period Rolling Correlation: {average_correlation}", 'white'))
