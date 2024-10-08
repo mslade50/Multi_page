@@ -496,10 +496,16 @@ def seasonals_chart(tick):
 	def information_coefficient(predictions, actuals, window):
 	    return predictions.rolling(window).corr(actuals).fillna(0)
 	# Calculate sign agreement for 5-day, 10-day, and 21-day forward changes
-	ic_1d = information_coefficient(s4_values, this_year_values, window=1).round(2)
-	ic_5d = information_coefficient(s4_values, this_year_values, window=5).round(2)
-	ic_10d = information_coefficient(s4_values, this_year_values, window=10).round(2)
-	ic_21d = information_coefficient(s4_values, this_year_values, window=21).round(2)
+	# Align lengths of s4_values and this_year_values
+	min_length = min(len(s4_values), len(this_year_values))
+	aligned_s4_values = s4_values[:min_length]
+	aligned_this_year_values = this_year_values[:min_length]
+	
+	# Now calculate IC without future data issues
+	ic_1d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=1).round(2)
+	ic_5d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=5).round(2)
+	ic_10d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=10).round(2)
+	ic_21d = information_coefficient(aligned_s4_values, aligned_this_year_values, window=21).round(2)
 
 	# Add a white dot at the specified X coordinate and the interpolated Y value
 	fig.add_trace(go.Scatter(x=[length_value], y=[y_value_at_length], mode='markers', marker=dict(color='white', size=8), name='White Dot' ,showlegend=False))
