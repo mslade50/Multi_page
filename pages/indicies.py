@@ -21,7 +21,12 @@ def seasonals_chart(tick):
 	end_date=dt.datetime(2023,12,30)
 
 	spx1=yf.Ticker(ticker)
-	spx = spx1.history(period="max",end=end_date)
+	try:
+	    spx = spx1.history(period="max", end=end_date)
+	except json.JSONDecodeError as e:
+	    st.error("Failed to retrieve data. Please try again later.")
+	    print("Error details:", e)
+	# spx = spx1.history(period="max",end=end_date)
 	spx_rank=spx1.history(period="max")
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
