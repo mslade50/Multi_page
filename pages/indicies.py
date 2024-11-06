@@ -12,14 +12,21 @@ import json
 
 st.title("Indicies")
 def get_stock_history(ticker, period="max", end_date=None):
-	    spx1 = yf.Ticker(ticker)
-	    try:
-	        # Fetch historical data
-	        spx = spx1.history(period=period, end=end_date)
-	    except Exception as e:
-	        print("Error fetching data:", e)
-	        spx = None  # Return None or handle error as needed
-	    return spx
+    spx1 = yf.Ticker(ticker)
+    try:
+        # Fetch historical data
+        spx = spx1.history(period=period, end=end_date)
+        if spx.empty:  # Check if data is empty
+            print(f"No data retrieved for ticker {ticker}. Please try again later.")
+            return None
+    except json.JSONDecodeError as e:
+        print(f"JSON decoding failed for ticker {ticker}: {e}")
+        return None
+    except Exception as e:
+        print(f"Error fetching data for ticker {ticker}: {e}")
+        return None
+    return spx
+
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1952
