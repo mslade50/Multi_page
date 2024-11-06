@@ -8,25 +8,8 @@ import yfinance as yf
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
-import json
 
 st.title("Indicies")
-def get_stock_history(ticker, period="max", end_date=None):
-    spx1 = yf.Ticker(ticker)
-    try:
-        # Fetch historical data
-        spx = spx1.history(period=period, end=end_date)
-        if spx.empty:  # Check if data is empty
-            print(f"No data retrieved for ticker {ticker}. Please try again later.")
-            return None
-    except json.JSONDecodeError as e:
-        print(f"JSON decoding failed for ticker {ticker}: {e}")
-        return None
-    except Exception as e:
-        print(f"Error fetching data for ticker {ticker}: {e}")
-        return None
-    return spx
-
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1952
@@ -37,8 +20,8 @@ def seasonals_chart(tick):
 	all_=""
 	end_date=dt.datetime(2023,12,30)
 
-	
-	spx = get_stock_history(ticker, end_date=end_date)
+	spx1=yf.Ticker(ticker)
+	spx = spx1.history(period="max",end=end_date)
 	spx_rank=spx1.history(period="max")
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
@@ -56,6 +39,7 @@ def seasonals_chart(tick):
 	dr5_rank=(spx_rank['Trailing_5d_percentile_rank'][-1]*100).round(2)
 
 	spx["log_return"] = np.log(spx["Close"] / spx["Close"].shift(1))*100
+
 
 	spx["day_of_month"] = spx.index.day
 	spx['day_of_year'] = spx.index.day_of_year
