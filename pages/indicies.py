@@ -523,7 +523,7 @@ def seasonals_chart(tick):
 	)
 	st.plotly_chart(fig)
 
-megas_list=['^DJI','^RUT','^NDX','QQQ','^GSPC','SPY','^SOX','^IXIC','^RUO','^GDAXI','^FTSE','^HSI','^N225','TLT','^VIX']
+megas_list=['^GSPC','SPY','^DJI','^RUT','^NDX','QQQ','^SOX','^IXIC','^RUO','^GDAXI','^FTSE','^HSI','^N225','TLT','^VIX']
 for stock in megas_list:
 	seasonals_chart(stock)
 
