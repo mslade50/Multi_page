@@ -22,7 +22,8 @@ def seasonals_chart(tick):
 	start_date = "1980-01-01"
 	end_date = dt.datetime(2023, 12, 30)
 	# Get historical data from Yahoo Finance
-	spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)		
+	spx = yf.Ticker(ticker).history(start=start_date, end=end_date)
+	spx_rank = yf.Ticker(ticker).history(start=start_date)		
 	# Get historical data from Yahoo Finance
 	# spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)
 	# spx_rank=spx1.history(period="max")
