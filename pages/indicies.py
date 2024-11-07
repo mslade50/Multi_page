@@ -10,7 +10,7 @@ import streamlit as st
 import plotly.graph_objs as go
 
 st.title("Indicies")
-	
+		
 def seasonals_chart(tick):
 	ticker=tick
 	cycle_start=1952
@@ -21,9 +21,17 @@ def seasonals_chart(tick):
 	all_=""
 	start_date = "1950-01-01"
 	end_date = dt.datetime(2023, 12, 30)
-	
+	for attempt in range(3):  # Try up to 3 times
+	    try:
+	        spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date, auto_adjust=True)
+	        break  # Exit loop if successful
+	    except json.decoder.JSONDecodeError:
+	        print(f"Attempt {attempt + 1} failed, retrying...")
+	        time.sleep(2)  # Wait 2 seconds before retrying
+	else:
+	    print("Failed to fetch data after 3 attempts.")
 	# Get historical data from Yahoo Finance
-	spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)
+	# spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)
 	# spx_rank=spx1.history(period="max")
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
