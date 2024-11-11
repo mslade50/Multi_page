@@ -11,24 +11,29 @@ import streamlit as st
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 from ta.momentum import RSIIndicator
+from yahoo_fin import stock_info as si 
+
 
 st.title("User Input")
 stock = st.text_input("Enter a stock ticker:", value="AAPL")
 def seasonals_chart(tick):
-	ticker=tick
-	cycle_start=1952
-	cycle_label='Election'
-	cycle_var='pre_election'
-	adjust=0
-	plot_ytd="Yes"
-	all_=""
-	end_date=dt.datetime(2023,12,29)
-	this_yr_end=dt.date.today()
+	ticker = tick
+	cycle_start = 1952
+	cycle_label = 'Election'
+	cycle_var = 'pre_election'
+	adjust = 0
+	plot_ytd = "Yes"
+	all_ = ""
+	end_date = dt.datetime(2023, 12, 29)
+	this_yr_end = dt.date.today()
 
-
-	spx1=yf.Ticker(ticker)
-	spx = spx1.history(period="max",end=end_date)
-	df= spx1.history(period="max")
+    # Fetch historical data using yahoo_fin
+	try:
+		spx = si.get_data(ticker, start_date="1950-01-01", end_date=end_date)
+		df = si.get_data(ticker, start_date="1950-01-01", end_date=end_date)
+	except Exception as e:
+		st.error(f"Failed to retrieve data for {ticker}: {e}")
+		return
 	df['200_MA'] = df['Close'].rolling(window=200).mean()
 	df['200_WMA'] = df['Close'].rolling(window=965).mean()
 	df['RSI'] = RSIIndicator(df['Close']).rsi()
