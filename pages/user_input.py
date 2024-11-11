@@ -30,6 +30,7 @@ def seasonals_chart(tick):
     # Fetch historical data using yahoo_fin
 	try:
 		spx = si.get_data(ticker, start_date="1950-01-01", end_date=end_date)
+		st.print(spx.head(4)
 		df = si.get_data(ticker, start_date="1950-01-01", end_date=end_date)
 	except Exception as e:
 		st.error(f"Failed to retrieve data for {ticker}: {e}")
