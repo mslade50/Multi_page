@@ -4,7 +4,7 @@ import datetime as dt
 from datetime import date
 from datetime import timedelta
 import os
-import yfinance as yf
+from yahoo_fin import stock_info as si 
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
@@ -22,8 +22,8 @@ def seasonals_chart(tick):
 	start_date = "1980-01-01"
 	end_date = dt.datetime(2023, 12, 30)
 	# Get historical data from Yahoo Finance
-	spx = yf.Ticker(ticker).history(start=start_date, end=end_date)
-	spx_rank = yf.Ticker(ticker).history(start=start_date)		
+	spx = si.get_data(ticker, start_date=start_date, end_date=end_date)
+	spx_rank = si.get_data(ticker, start_date=start_date)
 	# Get historical data from Yahoo Finance
 	# spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)
 	# spx_rank=spx1.history(period="max")
