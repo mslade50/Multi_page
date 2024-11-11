@@ -11,3 +11,4 @@ matplotlib==3.4.3  # Check version compatibility
 seaborn==0.11.2  # Check version compatibility
 scipy==1.7.3
 pandas_market_calendars==4.0.2
+yfinance==0.2.48
