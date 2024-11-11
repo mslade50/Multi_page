@@ -8,6 +8,7 @@ from yahoo_fin import stock_info as si
 import pandas as pd
 import streamlit as st
 import plotly.graph_objs as go
+st.cache_data.clear()  # Clear cached data in Streamlit
 
 st.title("Indicies")
 	
