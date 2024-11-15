@@ -26,6 +26,7 @@ def seasonals_chart(tick):
 	# spx = si.get_data(ticker, start_date=start_date, end_date=end_date)
 	# spx_rank = si.get_data(ticker, start_date=start_date)
 	# Get historical data from Yahoo Finance
+	spx1=yf.Ticker(ticker)
 	spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)
 	spx_rank=spx1.history(period="max")
 	# Calculate trailing 5-day returns
