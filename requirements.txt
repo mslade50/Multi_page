@@ -6,9 +6,8 @@ ta==0.10.2
 altair==4.1.0
 requests==2.26.0
 pandas_datareader==0.10.0  # Check version compatibility
-yahoo_fin==0.8.9.1  # Ensure correct version is specified
 matplotlib==3.4.3  # Check version compatibility
 seaborn==0.11.2  # Check version compatibility
 scipy==1.7.3
 pandas_market_calendars==4.0.2
-yfinance==0.2.28
+yfinance==0.2.49
