@@ -20,14 +20,14 @@ def seasonals_chart(tick):
 	adjust=0
 	plot_ytd="Yes"
 	all_=""
-	start_date = "1980-01-01"
+	start_date = "1950-01-01"
 	end_date = dt.datetime(2023, 12, 30)
 	# Get historical data from Yahoo Finance
-	spx = si.get_data(ticker, start_date=start_date, end_date=end_date)
-	spx_rank = si.get_data(ticker, start_date=start_date)
+	# spx = si.get_data(ticker, start_date=start_date, end_date=end_date)
+	# spx_rank = si.get_data(ticker, start_date=start_date)
 	# Get historical data from Yahoo Finance
-	# spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)
-	# spx_rank=spx1.history(period="max")
+	spx_rank = yf.Ticker(ticker).history(start=start_date, end=end_date)
+	spx_rank=spx1.history(period="max")
 	# Calculate trailing 5-day returns
 	spx_rank['Trailing_5d_Returns'] = (spx_rank['Close'] / spx_rank['Close'].shift(5)) - 1
 
